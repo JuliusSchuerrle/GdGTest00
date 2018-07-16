@@ -7,4 +7,12 @@ public class MainClass extends PApplet {
         PApplet.main("MainClass");
         System.out.println("hello");
     }
+
+    public void settings(){
+        size(1000,1000);
+    }
+
+    public void draw(){
+        line(0,0,100,100);
+    }
 }
