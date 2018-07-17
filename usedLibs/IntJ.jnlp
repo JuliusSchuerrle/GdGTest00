@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="IntJ.jnlp">
+  <information>
+    <title>IntJ</title>
+    <vendor>Unknown</vendor>
+    <description>IntJ</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="IntJ.jar" size="30608414" download="eager" />
+    <jar href="bundles\IntJ.jar" size="13852" download="eager" />
+    <jar href="bundles\IntJ\app\IntJ.jar" size="13852" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\charsets.jar" size="3090155" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\access-bridge-64.jar" size="188024" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\cldrdata.jar" size="3860502" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\dnsns.jar" size="8286" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\jaccess.jar" size="44516" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\jfxrt.jar" size="18195218" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\localedata.jar" size="2245827" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\nashorn.jar" size="2019024" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\sunec.jar" size="39771" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\sunjce_provider.jar" size="279427" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\sunmscapi.jar" size="32699" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\sunpkcs11.jar" size="250826" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\ext\zipfs.jar" size="68924" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\javaws.jar" size="940404" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\jce.jar" size="115557" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\jfr.jar" size="560043" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\jfxswt.jar" size="33932" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\jsse.jar" size="632371" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\management-agent.jar" size="381" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\plugin.jar" size="1922780" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\resources.jar" size="3490933" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\rt.jar" size="63313625" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\security\US_export_policy.jar" size="3026" download="eager" />
+    <jar href="bundles\IntJ\runtime\lib\security\local_policy.jar" size="3527" download="eager" />
+    <jar href="core.jar" size="1018780" download="eager" />
+    <jar href="gluegen-rt.jar" size="345605" download="eager" />
+    <jar href="jl1.0.1.jar" size="276656" download="eager" />
+    <jar href="jogl-all-natives-windows-amd64.jar" size="240721" download="eager" />
+    <jar href="jogl-all-natives-windows-i586.jar" size="209445" download="eager" />
+    <jar href="jogl-all.jar" size="3400637" download="eager" />
+    <jar href="jsminim.jar" size="64471" download="eager" />
+    <jar href="minim.jar" size="137335" download="eager" />
+    <jar href="mp3spi1.9.5.jar" size="24696" download="eager" />
+    <jar href="tritonus_aos.jar" size="10401" download="eager" />
+    <jar href="tritonus_share.jar" size="102673" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="src2.PrcocessingTest"  name="IntJ" />
+  <update check="background"/>
+</jnlp>
