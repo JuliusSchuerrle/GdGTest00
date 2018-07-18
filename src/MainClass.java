@@ -3,7 +3,10 @@ import controlP5.Slider;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
+import javafx.scene.shape.Circle;
 import processing.core.PApplet;
+import src.CircleCalc;
+import src.Point;
 
 public class MainClass extends PApplet {
     Minim minim;
@@ -13,6 +16,8 @@ public class MainClass extends PApplet {
     ControlP5 jControl;
 
 
+
+    CircleCalc circle;
     public static void main(String[] args){
 
         PApplet.main("MainClass");
@@ -35,8 +40,15 @@ public class MainClass extends PApplet {
         jingle = minim.loadFile("song.mp3", 2048);
         jingle.loop();
         fft = new FFT(jingle.bufferSize(), jingle.sampleRate());
+        circle=new CircleCalc(5,0,0.1f,300);
     }
     public void draw(){
-        line(0,0,100,100);
+
+        for(Point point:circle.getPoints()){
+         ellipse(point.getX()+500,point.getY()+500,50,50);
+        }
+        //System.out.println(circle.getNumberOfPoints());
+        circle.update(1/frameRate);
+        //line(0,0,100,100);
     }
 }
