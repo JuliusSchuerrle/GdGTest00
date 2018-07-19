@@ -1,5 +1,6 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -13,7 +14,7 @@ public class CircleCalc {
     private float angle;                //in radians
     private float speed;                //in radians per second
     private float radius;               //in world units
-    private Vector<Point> points;       //representation of points on the circle
+    private ArrayList<Point> points;       //representation of points on the circle
     private float[] rel;                //lookuptable of partial rad values, improves performance
 
     public CircleCalc(int numberOfPoints, float angle, float speed, float radius) {
@@ -21,11 +22,23 @@ public class CircleCalc {
         this.angle = angle;
         this.speed = speed;
         this.radius = radius;
-        points=new Vector<Point>();
+        this.points=new ArrayList<Point>();
+        points.add(new Point(1,1));
+
         rel=new float[numberOfPoints];
         for(int i=0;i<numberOfPoints;i++){
             rel[i]=((float)i/(float)numberOfPoints)*(float)(2*Math.PI);
             System.out.println(rel[i]);
+        }
+
+
+        for(int i=0;i<numberOfPoints;i++){
+
+            points.add(new src.Point(
+                            radius*(float)Math.sin(angle+rel[i]),
+                            radius*(float)Math.cos(angle+rel[i])
+                    )
+            );
         }
     }
 
@@ -76,11 +89,11 @@ public class CircleCalc {
         this.speed = speed;
     }
 
-    public Vector<Point> getPoints() {
+    public ArrayList<Point> getPoints() {
         return points;
     }
 
-    public void setPoints(Vector<Point> points) {
+    public void setPoints(ArrayList<Point> points) {
         this.points = points;
     }
 
