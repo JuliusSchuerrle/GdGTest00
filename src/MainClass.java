@@ -33,6 +33,7 @@ public class MainClass extends PApplet {
     private float smallCircleRotSpeed=0.4f;
     private int numberOfSmallPoints=2;
 
+    private float pointRadius=100.f;
 
     private float lifeSpan=30.f;
 
@@ -72,7 +73,8 @@ public class MainClass extends PApplet {
 
         jControl=new ControlP5(this);
         jControl.setAutoDraw(false);
-        Slider s1=jControl.addSlider("smallCircleRadius").setPosition(100,100).setMin(0).setMax(200).setHeight(50).setWidth(200);
+        Slider s1=jControl.addSlider("pointRadius").setPosition(100,100).setMin(0).setMax(200).setHeight(50).setWidth(200);
+        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(100,200).setMin(0).setMax(200).setHeight(50).setWidth(200);
 
         minim = new Minim(this);
         jingle = minim.loadFile("song.mp3", 2048);
@@ -93,6 +95,7 @@ public class MainClass extends PApplet {
         dtc = dt * 60;
         runFFT();
         runBeat();
+        updateData();
         background(0);
         strokeWeight(0);
         for(int i=0;i<numberOfCircles;i++){
@@ -118,7 +121,7 @@ public class MainClass extends PApplet {
             fill(renderPoints.get(i).getR(), renderPoints.get(i).getG(), renderPoints.get(i).getB(), renderPoints.get(i).getA());
 
             if(i>renderPoints.size()-(numberOfCircles*numberOfSmallPoints+1)){
-                ellipse(renderPoints.get(i).getX(),renderPoints.get(i).getY(),smallCircleRadius+weight,smallCircleRadius+weight);
+                ellipse(renderPoints.get(i).getX(),renderPoints.get(i).getY(),pointRadius+weight,pointRadius+weight);
 
             }else {
                 ellipse(renderPoints.get(i).getX(), renderPoints.get(i).getY(), renderPoints.get(i).getRadius(), renderPoints.get(i).getRadius());
@@ -169,6 +172,8 @@ public class MainClass extends PApplet {
 
     public void runBeat(){
 
+
+
         if (jingle.position() + 10 > TimeLookupTable.d[beatCounter] && jingle.position() - TimeLookupTable.d[beatCounter] < 10000) {
 
             for(int i=0;i<numberOfCircles;i++){
@@ -177,7 +182,7 @@ public class MainClass extends PApplet {
                             +smallCircles.get(i).getPoints().get(k).getX();
                     float y=mainCircle.getPoints().get(i).getY()+smallCircles.get(i).getPoints().get(k).getY();
 
-                    renderPoints.add(new RenderPoint(x,y,0,r,g,b,255,smallCircleRadius,lifeSpan));
+                    renderPoints.add(new RenderPoint(x,y,0,r,g,b,255,pointRadius,lifeSpan));
 
 
                 }
@@ -190,6 +195,12 @@ public class MainClass extends PApplet {
             }
 
 
+        }
+    }
+    public void updateData(){
+        mainCircle.setRadius(mainCircleRadius);
+        for(CircleCalc circle:smallCircles){
+            circle.setRadius(smallCircleRadius);
         }
     }
 }
