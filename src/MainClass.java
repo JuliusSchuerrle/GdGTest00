@@ -1,7 +1,9 @@
 
 import com.jogamp.opengl.GL;
-import controlP5.CColor;
+import controlP5.*;
 import controlP5.ControlP5;
+import controlP5.ControlEvent;
+import controlP5.DropdownList;
 import controlP5.Slider;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -17,6 +19,10 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class MainClass extends PApplet {
+
+    private final int HEIGHT = 1080;
+    private final int WIDTH = 1920;
+
     Minim minim;
     AudioPlayer jingle;
     FFT fft;
@@ -25,6 +31,10 @@ public class MainClass extends PApplet {
     //DasIstEinTest
     //circles setup
     CircleCalc mainCircle;
+
+
+
+
     private float mainCircleRadius=400;
     private float mainCircleRotSpeed=0.1f;  //0.1f
 
@@ -68,9 +78,11 @@ public class MainClass extends PApplet {
     }
 
     public void settings(){
-        size(1920 , 1080,P3D );
+        size(WIDTH , HEIGHT,P3D );
 
     }
+
+
 
     public void setup(){
 
@@ -80,10 +92,23 @@ public class MainClass extends PApplet {
         //Menu
         jControl=new ControlP5(this);
         jControl.setAutoDraw(false);
-        Slider s1=jControl.addSlider("pointRadius").setPosition(100,100).setMin(0).setMax(200).setHeight(50).setWidth(200);
-        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(100,200).setMin(0).setMax(200).setHeight(50).setWidth(200);
 
-        ;
+        //Big circle
+        Knob k1 = jControl.addKnob("mainCircleRotSpeed").setRange(0,1).setValue(mainCircleRotSpeed).setPosition(100,100).setRadius(50).setSize(200,200);
+        Slider s4=jControl.addSlider("mainCircleRadius").setPosition(100,350).setMin(0).setMax(700).setValue(400).setHeight(50).setWidth(200).setLabel("Kreisradius");
+        //Small circle
+
+        Knob k2 = jControl.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200);
+        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200);
+        Slider s1=jControl.addSlider("pointRadius").setPosition(WIDTH-300,450).setMin(0).setMax(200).setHeight(200).setWidth(75).setLabel("Punktgroeße");
+        Slider s3=jControl.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
+
+        //DropdownList d1 = jControl.addDropdownList("TESCHD").setPosition(100, 100).setBarHeight(30);
+
+
+
+
+
 
 
 
@@ -101,15 +126,15 @@ public class MainClass extends PApplet {
 
     }
     public void draw(){
-        //Philipp GIT Test
 
         if(!jingle.isPlaying())
             return;
 
         //Debug
+        /*
         System.out.println(frameRate+"    "+renderPoints.size());
         System.out.println(beatCounter);
-
+           */
 
         dt = 1 / frameRate;
         dtc = dt * 60;
@@ -221,14 +246,15 @@ public class MainClass extends PApplet {
     }
     public void updateData(){
         mainCircle.setRadius(mainCircleRadius);
+
         for(CircleCalc circle:smallCircles){
             circle.setRadius(smallCircleRadius);
+            circle.setSpeed(smallCircleRotSpeed);
         }
         final int START = 80;
         final int END = START+32;
         if(beatCounter>START&&beatCounter<END){
             mainCircle.setSpeed(0);
-            System.out.println("test");
         }else{
             mainCircle.setSpeed(mainCircleRotSpeed);
         }
@@ -250,6 +276,7 @@ public class MainClass extends PApplet {
         }
     }
 
+
     @Override
     public void keyReleased(){
         if(key==' ') {
@@ -258,6 +285,9 @@ public class MainClass extends PApplet {
             else
                 jingle.play();
 
+        }
+        if(key=='m'){
+            jControl.setVisible(!jControl.isVisible());
         }
     }
 
