@@ -21,7 +21,7 @@ public class MainClass extends PApplet {
     FFT fft;
     damkjer.ocd.Camera cam;
     ControlP5 jControl;
-
+    //DasIstEinTest
     //circles setup
     CircleCalc mainCircle;
     private float mainCircleRadius=400;
