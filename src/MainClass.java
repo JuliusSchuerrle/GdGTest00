@@ -1,5 +1,6 @@
 
 import com.jogamp.opengl.GL;
+import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Slider;
 import ddf.minim.AudioPlayer;
@@ -30,10 +31,10 @@ public class MainClass extends PApplet {
     private int numberOfCircles=5;
 
     private float smallCircleRadius=20;
-    private float smallCircleRotSpeed=0.4f;
+    private float smallCircleRotSpeed=1f;
     private int numberOfSmallPoints=2;
 
-    private float pointRadius=100.f;
+    private float pointRadius=50.f;
 
     //private float lifeSpan=30.f;
     private float lifeSpan=1.f;
@@ -81,11 +82,8 @@ public class MainClass extends PApplet {
         Slider s1=jControl.addSlider("pointRadius").setPosition(100,100).setMin(0).setMax(200).setHeight(50).setWidth(200);
         Slider s2=jControl.addSlider("smallCircleRadius").setPosition(100,200).setMin(0).setMax(200).setHeight(50).setWidth(200);
 
+        ;
 
-        Slider s3=jControl.addSlider("r").setPosition(100,400).setMin(0).setMax(255).setHeight(50).setWidth(200);
-        Slider s4=jControl.addSlider("g").setPosition(100,500).setMin(0).setMax(255).setHeight(50).setWidth(200);
-        Slider s5=jControl.addSlider("b").setPosition(100,600).setMin(0).setMax(255).setHeight(50).setWidth(200);
-        Slider s6=jControl.addSlider("lifeSpan").setPosition(100,260).setMin(0).setMax(60).setHeight(50).setWidth(200);
 
 
         minim = new Minim(this);
@@ -104,15 +102,23 @@ public class MainClass extends PApplet {
     public void draw(){
         //Philipp GIT Test
 
+        if(!jingle.isPlaying())
+            return;
 
+        //Debug
         System.out.println(frameRate+"    "+renderPoints.size());
+        System.out.println(beatCounter);
+
+
         dt = 1 / frameRate;
         dtc = dt * 60;
+
         runFFT();
         runBeat();
         updateData();
         background(0);
         strokeWeight(0);
+
         for(int i=0;i<numberOfCircles;i++){
             for(int k=0;k<numberOfSmallPoints;k++){
                 float x=mainCircle.getPoints().get(i).getX()
@@ -216,5 +222,25 @@ public class MainClass extends PApplet {
         for(CircleCalc circle:smallCircles){
             circle.setRadius(smallCircleRadius);
         }
+        final int START = 80;
+        final int END = START+32;
+        if(beatCounter>START&&beatCounter<END){
+            mainCircle.setSpeed(0);
+            System.out.println("test");
+        }else{
+            mainCircle.setSpeed(mainCircleRotSpeed);
+        }
     }
+
+    @Override
+    public void keyReleased(){
+        if(key==' ') {
+            if (jingle.isPlaying())
+                jingle.pause();
+            else
+                jingle.play();
+
+        }
+    }
+
 }

@@ -149,4 +149,12 @@ public class TimeLookupTable {
             50966.787f,
             51302.610f
     };
+
+    public static float[] acts={
+            0f,
+            5896.753f,
+            28947.307f,
+            40457.563f,
+            45169.815f
+    };
 }
