@@ -48,6 +48,7 @@ public class MainClass extends PApplet {
 
 
     int beatCounter=0;
+    int partCounter=0;
 
     float r=255;
     float g=255;
@@ -116,6 +117,7 @@ public class MainClass extends PApplet {
         runFFT();
         runBeat();
         updateData();
+        updateColors();
         background(0);
         strokeWeight(0);
 
@@ -229,6 +231,22 @@ public class MainClass extends PApplet {
             System.out.println("test");
         }else{
             mainCircle.setSpeed(mainCircleRotSpeed);
+        }
+    }
+
+    private int colorList[][]={{2,3,255},{1,2,255},{2,3,255},{3,2,255},{2,3,255}};
+
+    public void updateColors(){
+        if(jingle.position()>=TimeLookupTable.acts[partCounter]){
+
+            //TODO Interpolation
+            //TODO Chose better colors
+
+            partCounter=(partCounter+1)%5;
+            this.r = (int)(Math.random()*(255/2)+(255/4));
+            this.g = (int)(Math.random()*(255/2)+(255/4));
+            this.b = 255;
+
         }
     }
 
