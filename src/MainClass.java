@@ -25,7 +25,7 @@ public class MainClass extends PApplet {
     //circles setup
     CircleCalc mainCircle;
     private float mainCircleRadius=400;
-    private float mainCircleRotSpeed=0.1f;
+    private float mainCircleRotSpeed=0.0f;  //0.1f
 
     private int numberOfCircles=5;
 
@@ -54,6 +54,8 @@ public class MainClass extends PApplet {
 
 
 
+
+
     ArrayList<CircleCalc> smallCircles;
     ArrayList<RenderPoint> renderPoints;
     ArrayList<RenderPoint> renderPointsToRemove;
@@ -72,10 +74,15 @@ public class MainClass extends PApplet {
 
         cam = new damkjer.ocd.Camera(this,200,-250,300);
 
+
+        //Menu
         jControl=new ControlP5(this);
         jControl.setAutoDraw(false);
         Slider s1=jControl.addSlider("pointRadius").setPosition(100,100).setMin(0).setMax(200).setHeight(50).setWidth(200);
         Slider s2=jControl.addSlider("smallCircleRadius").setPosition(100,200).setMin(0).setMax(200).setHeight(50).setWidth(200);
+        Slider s3=jControl.addSlider("r").setPosition(100,400).setMin(0).setMax(255).setHeight(50).setWidth(200);
+        Slider s4=jControl.addSlider("g").setPosition(100,500).setMin(0).setMax(255).setHeight(50).setWidth(200);
+        Slider s5=jControl.addSlider("b").setPosition(100,600).setMin(0).setMax(255).setHeight(50).setWidth(200);
 
         minim = new Minim(this);
         jingle = minim.loadFile("song.mp3", 2048);
