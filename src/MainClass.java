@@ -35,7 +35,8 @@ public class MainClass extends PApplet {
 
     private float pointRadius=100.f;
 
-    private float lifeSpan=30.f;
+    //private float lifeSpan=30.f;
+    private float lifeSpan=1.f;
 
     //FFT variables
     float pos=135;
@@ -90,6 +91,9 @@ public class MainClass extends PApplet {
 
     }
     public void draw(){
+        //Philipp GIT Test
+
+
         System.out.println(frameRate+"    "+renderPoints.size());
         dt = 1 / frameRate;
         dtc = dt * 60;
@@ -127,7 +131,6 @@ public class MainClass extends PApplet {
                 ellipse(renderPoints.get(i).getX(), renderPoints.get(i).getY(), renderPoints.get(i).getRadius(), renderPoints.get(i).getRadius());
             }
         }
-
 
 
 
