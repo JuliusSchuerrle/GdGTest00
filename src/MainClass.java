@@ -32,7 +32,7 @@ public class MainClass extends PApplet {
     SlideMenu menu;
     ControlP5 jControl;
     ControlP5 j2;
-    //DasIstEinTest
+    Slider sTest;
     //circles setup
     CircleCalc mainCircle;
 
@@ -108,7 +108,7 @@ public class MainClass extends PApplet {
         //Small circle
 
         Knob k2 = jControl.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
-        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200).setLabel("Kreisradius");
+        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200).setLabel("Kreisradius").setValue(smallCircleRadius);
         Slider s1=jControl.addSlider("pointRadius").setPosition(WIDTH-300,450).setMin(0).setMax(200).setHeight(200).setWidth(75).setLabel("Punktgroeße");
          s3=jControl.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
 
@@ -116,7 +116,7 @@ public class MainClass extends PApplet {
 
 
 
-
+        sTest=s2;
 
 
 
@@ -137,7 +137,7 @@ public class MainClass extends PApplet {
     int x = 0;
     public void draw(){
 
-
+        test();
 
 
         if(!isPlaying)
@@ -262,6 +262,7 @@ public class MainClass extends PApplet {
     }
     public void updateData(){
         menu.update();
+        jControl.update();
         mainCircle.setRadius(mainCircleRadius);
 
         for(CircleCalc circle:smallCircles){
@@ -321,6 +322,13 @@ public class MainClass extends PApplet {
         }
 
 
+    }
+    private void test(){
+        if(beatCounter%5==0) {
+            smallCircleRadius = (int) (Math.random() * 20);
+            //sTest.update();
+            sTest.setValue(smallCircleRadius);
+        }
     }
 
 }
