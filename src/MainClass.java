@@ -1,4 +1,4 @@
-
+import gui.SlideMenu;
 import com.jogamp.opengl.GL;
 import controlP5.*;
 import controlP5.ControlP5;
@@ -8,6 +8,7 @@ import controlP5.Slider;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
+import gui.SlideMenu;
 import javafx.scene.shape.Circle;
 import processing.core.PApplet;
 import src.CircleCalc;
@@ -15,6 +16,7 @@ import src.Point;
 import src.RenderPoint;
 import src.TimeLookupTable;
 
+import javax.naming.SizeLimitExceededException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -27,13 +29,15 @@ public class MainClass extends PApplet {
     AudioPlayer jingle;
     FFT fft;
     damkjer.ocd.Camera cam;
+    SlideMenu menu;
     ControlP5 jControl;
+    ControlP5 j2;
     //DasIstEinTest
     //circles setup
     CircleCalc mainCircle;
 
 
-
+    private boolean isPlaying = true;
 
     private float mainCircleRadius=400;
     private float mainCircleRotSpeed=0.1f;  //0.1f
@@ -64,7 +68,7 @@ public class MainClass extends PApplet {
     float g=255;
     float b=255;
 
-
+    Slider s3;
 
 
 
@@ -90,18 +94,23 @@ public class MainClass extends PApplet {
 
 
         //Menu
+        menu = new SlideMenu(this);
+        j2 = menu.getMenu();
+        j2.setAutoDraw(false);
+
+
         jControl=new ControlP5(this);
         jControl.setAutoDraw(false);
 
         //Big circle
-        Knob k1 = jControl.addKnob("mainCircleRotSpeed").setRange(0,1).setValue(mainCircleRotSpeed).setPosition(100,100).setRadius(50).setSize(200,200);
+        Knob k1 = jControl.addKnob("mainCircleRotSpeed").setRange(0,1).setValue(mainCircleRotSpeed).setPosition(100,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
         Slider s4=jControl.addSlider("mainCircleRadius").setPosition(100,350).setMin(0).setMax(700).setValue(400).setHeight(50).setWidth(200).setLabel("Kreisradius");
         //Small circle
 
-        Knob k2 = jControl.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200);
-        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200);
+        Knob k2 = jControl.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
+        Slider s2=jControl.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200).setLabel("Kreisradius");
         Slider s1=jControl.addSlider("pointRadius").setPosition(WIDTH-300,450).setMin(0).setMax(200).setHeight(200).setWidth(75).setLabel("Punktgroeße");
-        Slider s3=jControl.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
+         s3=jControl.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
 
         //DropdownList d1 = jControl.addDropdownList("TESCHD").setPosition(100, 100).setBarHeight(30);
 
@@ -125,9 +134,13 @@ public class MainClass extends PApplet {
         renderPointsToRemove=new ArrayList<RenderPoint>();
 
     }
+    int x = 0;
     public void draw(){
 
-        if(!jingle.isPlaying())
+
+
+
+        if(!isPlaying)
             return;
 
         //Debug
@@ -135,6 +148,8 @@ public class MainClass extends PApplet {
         System.out.println(frameRate+"    "+renderPoints.size());
         System.out.println(beatCounter);
            */
+
+
 
         dt = 1 / frameRate;
         dtc = dt * 60;
@@ -188,7 +203,8 @@ public class MainClass extends PApplet {
 
 
         camera();
-        jControl.draw();
+        //jControl.draw();
+        j2.draw();
         cam.aim(0,0,0);
         cam.jump(0, 0,200+1*1000.f);
         cam.feed();
@@ -245,6 +261,7 @@ public class MainClass extends PApplet {
         }
     }
     public void updateData(){
+        menu.update();
         mainCircle.setRadius(mainCircleRadius);
 
         for(CircleCalc circle:smallCircles){
@@ -280,15 +297,30 @@ public class MainClass extends PApplet {
     @Override
     public void keyReleased(){
         if(key==' ') {
-            if (jingle.isPlaying())
+            if (isPlaying) {
                 jingle.pause();
-            else
+                isPlaying = false;
+            }
+            else {
                 jingle.play();
+
+                isPlaying = true;
+            }
 
         }
         if(key=='m'){
             jControl.setVisible(!jControl.isVisible());
         }
+        if(key=='d'){
+            menu.right();
+
+        }
+        if(key=='a'){
+            menu.left();
+
+        }
+
+
     }
 
 }
