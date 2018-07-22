@@ -10,11 +10,10 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import gui.SlideMenu;
 import javafx.scene.shape.Circle;
+import org.openkinect.processing.Kinect;
 import processing.core.PApplet;
-import src.CircleCalc;
-import src.Point;
-import src.RenderPoint;
-import src.TimeLookupTable;
+import processing.core.PImage;
+import src.*;
 
 import javax.naming.SizeLimitExceededException;
 import java.util.ArrayList;
@@ -24,6 +23,10 @@ public class MainClass extends PApplet {
 
     private final int HEIGHT = 1080;
     private final int WIDTH = 1920;
+
+    Kinect kinect;
+    Tracker tracker;
+
 
     Minim minim;
     AudioPlayer jingle;
@@ -35,6 +38,7 @@ public class MainClass extends PApplet {
     Slider sTest;
     //circles setup
     CircleCalc mainCircle;
+
 
 
     private boolean isPlaying = true;
@@ -90,6 +94,12 @@ public class MainClass extends PApplet {
 
     public void setup(){
 
+        kinect=new Kinect(this);
+        kinect.activateDevice(0);
+        kinect.initDepth();
+        kinect.setTilt(10);
+
+        tracker=new Tracker(kinect,this);
         cam = new damkjer.ocd.Camera(this,200,-250,300);
 
 
@@ -120,6 +130,7 @@ public class MainClass extends PApplet {
 
 
 
+
         minim = new Minim(this);
         jingle = minim.loadFile("song.mp3", 2048);
         jingle.loop();
@@ -138,6 +149,10 @@ public class MainClass extends PApplet {
 
         test();
 
+
+        if(false){
+            return;
+        }
 
         if(!isPlaying)
             return;
@@ -204,6 +219,13 @@ public class MainClass extends PApplet {
         camera();
         //jControl.draw();
         j2.draw();
+        try {
+            PImage img = kinect.getDepthImage();
+            image(img, 0, 0);
+        }catch (Exception e){
+
+        }
+        tracker.update(1/frameRate);
         cam.aim(0,0,0);
         cam.jump(0, 0,200+1*1000.f);
         cam.feed();
@@ -319,6 +341,9 @@ public class MainClass extends PApplet {
             menu.left();
 
         }
+        if(key==PApplet.ESC){
+            kinect.stopDepth();
+        }
 
 
     }
@@ -329,4 +354,5 @@ public class MainClass extends PApplet {
             sTest.setValue(smallCircleRadius);
         }
     }
+
 }
