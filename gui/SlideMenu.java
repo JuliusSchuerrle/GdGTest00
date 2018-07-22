@@ -61,7 +61,6 @@ public class SlideMenu {
         middle.setPosition( middle.getPosition()[0]+ direction*5,middle.getPosition()[1]);
         left.setPosition( right.getPosition()[0]+ direction*5,right.getPosition()[1]);
         right.setPosition( right.getPosition()[0]+ direction*5,right.getPosition()[1]);
-        System.out.println((-1)%4);
         if(cnt >= DISTANCE){
             if(direction>0){
                 right.setVisible(false);
@@ -76,8 +75,8 @@ public class SlideMenu {
                 */
 
                 //TODO Wenn -1 dann slider.size()-1
-                left=sliders.get((sliders.indexOf(middle)-1)%sliders.size()+sliders.size()%sliders.size());
 
+                left=sliders.get(((sliders.indexOf(middle)-1)%sliders.size()+sliders.size()) %sliders.size());
 
                 setDisplay();
             }else if(direction<0){
