@@ -329,8 +329,4 @@ public class MainClass extends PApplet {
             sTest.setValue(smallCircleRadius);
         }
     }
-    private float bezier(float start, float end, float i){
-        return bezierPoint(start,start+10,end-10,end,i);
-
-    }
 }
