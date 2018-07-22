@@ -45,43 +45,68 @@ public class SlideMenu {
     public ControlP5 getMenu(){
         return menu;
     }
+
     public void update(){
+
+        if(isMoving){
+
+            isMoving=move();
+        }
         left.update();
         middle.update();
         right.update();
 
-
-        if(isMoving){
-            isMoving=move();
-        }
-        menu.setPosition(xPos,yPos);
-
     }
     public boolean move(){
-
-        middle.setPosition( middle.getPosition()[0]+ direction*1,middle.getPosition()[1]);
-        left.setPosition( right.getPosition()[0]+ direction*1,right.getPosition()[1]);
-        right.setPosition( right.getPosition()[0]+ direction*1,right.getPosition()[1]);
+        middle.setPosition( middle.getPosition()[0]+ direction*5,middle.getPosition()[1]);
+        left.setPosition( right.getPosition()[0]+ direction*5,right.getPosition()[1]);
+        right.setPosition( right.getPosition()[0]+ direction*5,right.getPosition()[1]);
+        System.out.println((-1)%4);
         if(cnt >= DISTANCE){
             if(direction>0){
+                right.setVisible(false);
                 right=middle;
                 middle=left;
-                left=sliders.get(sliders.indexOf(middle)-1);
-            }else{
-                right=middle;
-                middle=left;
+
+                /*int i=sliders.indexOf(middle)-1;
+                if(i==-1)
+                    i=sliders.size()-1;
+                left=sliders.get(i);
+                System.out.println((i));
+                */
+
+                //TODO Wenn -1 dann slider.size()-1
+                left=sliders.get((sliders.indexOf(middle)-1)%sliders.size()+sliders.size()%sliders.size());
+
+
+                setDisplay();
+            }else if(direction<0){
+                left.setVisible(false);
+                left=middle;
+                middle=right;
                 right=sliders.get((sliders.indexOf(middle)+1)%sliders.size());
+                setDisplay();
+
+
             }
+
+            direction = 0;
+            left.update();
+            middle.update();
+            right.update();
+
             return false;
+
+
         }
-        cnt++;
+        cnt+=5;
         return true;
 
     }
 
     public void right(){
         cnt=0;
-        if(!move()) {
+        if(!isMoving) {
 
             NxPos = xPos - DISTANCE;
             isMoving = true;
@@ -90,7 +115,7 @@ public class SlideMenu {
     }
     public void left(){
         cnt=0;
-        if(!move()) {
+        if(!isMoving) {
             NxPos = xPos + DISTANCE;
             isMoving = true;
             direction = 1;
@@ -102,16 +127,22 @@ public class SlideMenu {
         s2=menu.addSlider("mainCircleRadius").setWidth(STDLENGTH).setHeight(50).setVisible(false);
         s3=menu.addSlider("pointRadius").setWidth(STDLENGTH).setHeight(50).setVisible(false);
         s4=menu.addSlider("smallCircleRadius").setWidth(STDLENGTH).setHeight(50).setVisible(false);
+        s5=menu.addSlider("smallCircleSpeed").setWidth(STDLENGTH).setHeight(50).setVisible(false);
 
         sliders.add(s1);
         sliders.add(s2);
         sliders.add(s3);
         sliders.add(s4);
+        sliders.add(s5);
 
-        left = s1;
-        middle = s2;
-        right = s3;
+        left = s2;
+        middle = s3;
+        right = s4;
 
+        setDisplay();
+    }
+
+    private void setDisplay(){
         left.setPosition(MIDPOSX-DISTANCE,MIDPOSY);
         middle.setPosition(MIDPOSX,MIDPOSY);
         right.setPosition(MIDPOSX+DISTANCE,MIDPOSY);
