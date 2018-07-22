@@ -120,7 +120,6 @@ public class MainClass extends PApplet {
 
 
 
-
         minim = new Minim(this);
         jingle = minim.loadFile("song.mp3", 2048);
         jingle.loop();
@@ -330,5 +329,8 @@ public class MainClass extends PApplet {
             sTest.setValue(smallCircleRadius);
         }
     }
+    private float bezier(float start, float end, float i){
+        return bezierPoint(start,start+10,end-10,end,i);
 
+    }
 }
