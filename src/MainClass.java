@@ -24,6 +24,8 @@ public class MainClass extends PApplet {
     private final int HEIGHT = 1080;
     private final int WIDTH = 1920;
 
+
+
     Kinect kinect;
     Tracker tracker;
 
@@ -104,7 +106,7 @@ public class MainClass extends PApplet {
 
 
         //Menu
-        menu = new SlideMenu(this);
+        menu = new SlideMenu(this, HEIGHT,WIDTH);
         j2 = menu.getMenu();
         j2.setAutoDraw(false);
 
@@ -353,6 +355,14 @@ public class MainClass extends PApplet {
             //sTest.update();
             sTest.setValue(smallCircleRadius);
         }
+    }
+
+    public int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public int getWIDTH() {
+        return WIDTH;
     }
 
 }

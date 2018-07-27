@@ -3,7 +3,6 @@ import javazoom.jl.decoder.Control;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Slider;
-
 import java.applet.Applet;
 import java.util.ArrayList;
 
@@ -23,18 +22,23 @@ public class SlideMenu {
     private Slider middle;
     private Slider right;
 
-    private final int MIDPOSX = 1920/2-LENGTH/2;
-    private final int MIDPOSY = 1080-150;
+    private final int MIDPOSX;
+    private final int MIDPOSY;
     //private final int DISTANCE = 1920/2+LENGTH;
     private final int DISTANCE = 1920/2+LENGTH;
     PApplet applet;
 
     ArrayList<Slider> sliders = new ArrayList<>();
 
-    public SlideMenu(PApplet applet){
+    public SlideMenu(PApplet applet, int FRAMEHEIGHT, int FRAMEWIDTH){
         this.applet = applet;
+        MIDPOSX = FRAMEWIDTH/2-LENGTH/2;
+        MIDPOSY = FRAMEHEIGHT-150;
         menu = new ControlP5(applet);
         menu.setUpdate(true);
+
+
+
         setupMenu();
 
 
@@ -63,7 +67,7 @@ public class SlideMenu {
 
 
     public boolean move(){
-        float xMove =  applet.bezierPoint(0,10,DISTANCE-10f,DISTANCE,i);
+        float xMove =  applet.bezierPoint(0,-10,DISTANCE-100f,DISTANCE,i);
         float yMoveU = applet.bezierPoint(0,100,110,100,i);;
         float yMoveD = applet.bezierPoint(0,-10,90,100,i);;
 
