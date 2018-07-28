@@ -22,8 +22,8 @@ import java.util.Vector;
 
 public class MainClass extends PApplet {
 
-    private final int HEIGHT = 1080;
-    private final int WIDTH = 1920;
+    public final int HEIGHT = 1080;
+    public final int WIDTH = 1920;
 
 
 
@@ -96,7 +96,7 @@ public class MainClass extends PApplet {
 
 
     public void setup(){
-        f1 = new Firework(WIDTH,HEIGHT,30,100f,4000);
+        //f1 = new Firework(WIDTH,HEIGHT,30,100f,4000,this);
 //        kinect=new Kinect(this);
 //        kinect.activateDevice(0);
 //        kinect.initDepth();
@@ -171,6 +171,7 @@ public class MainClass extends PApplet {
         dt = 1 / frameRate;
         dtc = dt * 60;
 
+
         runFFT();
         runBeat();
         updateData();
@@ -208,10 +209,7 @@ public class MainClass extends PApplet {
             }
         }
 
-        if(jingle.position()>4000){
-            f1.move(jingle.position());
-            ellipse(f1.getX(),f1.getY(),20,20);
-        }
+       Firework.doFirework(jingle.position(),this);
 
 
 
@@ -226,6 +224,7 @@ public class MainClass extends PApplet {
         //pushMatrix();
         //translate(WIDTH/2,HEIGHT/2);
 
+        //popMatrix();
         //popMatrix();
 
         camera();
@@ -382,7 +381,7 @@ public class MainClass extends PApplet {
 
 
         if(jingle.position()>=TimeLookupTable.acts[i]){
-            fireworks.add(new Firework(WIDTH,HEIGHT,30,40,jingle.position()));
+            //fireworks.add(new Firework(WIDTH,HEIGHT,30,40,jingle.position(),this));
             i+=i%TimeLookupTable.acts.length;
         }
         for(Firework f : fireworks){
@@ -392,4 +391,10 @@ public class MainClass extends PApplet {
 
     }
     ArrayList <Firework> fireworks = new ArrayList<>();
+
+    public void wonderfull(){
+
+
+
+    }
 }

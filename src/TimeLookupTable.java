@@ -157,4 +157,15 @@ public class TimeLookupTable {
             40457.563f,
             45169.815f
     };
+
+    public static float[] wonderful= {
+            28947.307f,
+            30377.506f,
+            31838.819f,
+            34704.581f,
+            36163.748f,
+            37834.435f,
+            60000f
+
+    };
 }
