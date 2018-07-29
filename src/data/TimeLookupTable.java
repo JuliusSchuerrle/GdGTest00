@@ -1,4 +1,4 @@
-package src;
+package src.data;
 
 /**
  * Created by js148 on 18.07.2018.

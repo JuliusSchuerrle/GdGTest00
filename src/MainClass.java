@@ -1,24 +1,16 @@
 import damkjer.ocd.Camera;
-import gui.SlideMenu;
-import com.jogamp.opengl.GL;
+import src.data.TimeLookupTable;
+import src.gui.SlideMenu;
 import controlP5.*;
 import controlP5.ControlP5;
-import controlP5.ControlEvent;
-import controlP5.DropdownList;
 import controlP5.Slider;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
-import gui.SlideMenu;
-import javafx.scene.shape.Circle;
-import org.openkinect.processing.Kinect;
 import processing.core.PApplet;
-import processing.core.PImage;
 import src.*;
 
-import javax.naming.SizeLimitExceededException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class MainClass extends PApplet {
 
@@ -360,6 +352,9 @@ public class MainClass extends PApplet {
             menu.left();
 
         }
+        if(key=='g'){
+            jingle.skip(10000);
+        }
 //        if(key==PApplet.ESC){
 //            kinect.stopDepth();
 //        }
@@ -393,6 +388,7 @@ public class MainClass extends PApplet {
     ArrayList <Firework> fireworks = new ArrayList<>();
 
     public void wonderfull(){
+
 
 
 

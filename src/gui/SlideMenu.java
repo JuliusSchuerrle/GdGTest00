@@ -1,9 +1,8 @@
-package gui;
-import javazoom.jl.decoder.Control;
+package src.gui;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Slider;
-import java.applet.Applet;
+
 import java.util.ArrayList;
 
 
