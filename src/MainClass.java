@@ -30,7 +30,6 @@ public class MainClass extends PApplet {
     SlideMenu menu;
     ControlP5 mainMenu;
     ControlP5 slideMenu;
-    Slider sTest;
     //circles setup
     CircleCalc mainCircle;
 
@@ -38,7 +37,7 @@ public class MainClass extends PApplet {
 
     private boolean isPlaying = true;
 
-    private float mainCircleRadius=400;
+    private float mainCircleRadius=200;
     private float mainCircleRotSpeed=0.1f;  //0.1f
 
     private int numberOfCircles=5;
@@ -67,7 +66,7 @@ public class MainClass extends PApplet {
     float g=255;
     float b=255;
 
-    Slider s3;
+
 
     Firework f1;
 
@@ -109,19 +108,19 @@ public class MainClass extends PApplet {
 
         //Big circle
         Knob k1 = mainMenu.addKnob("mainCircleRotSpeed").setRange(0,1).setValue(mainCircleRotSpeed).setPosition(100,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
-        Slider s4=mainMenu.addSlider("mainCircleRadius").setPosition(100,350).setMin(0).setMax(700).setValue(400).setHeight(50).setWidth(200).setLabel("Kreisradius");
-        //Small circle
+        Slider s4=mainMenu.addSlider("mainCircleRadius").setPosition(100,350).setMax(700).setValue(400).setHeight(50).setWidth(200).setLabel("Kreisradius");
 
+        //Small circle
         Knob k2 = mainMenu.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
         Slider s2=mainMenu.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200).setLabel("Kreisradius").setValue(smallCircleRadius);
         Slider s1=mainMenu.addSlider("pointRadius").setPosition(WIDTH-300,450).setMin(0).setMax(200).setHeight(200).setWidth(75).setLabel("Punktgroeße");
-         s3=mainMenu.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
+        Slider s3=mainMenu.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
 
         //DropdownList d1 = jControl.addDropdownList("TESCHD").setPosition(100, 100).setBarHeight(30);
 
 
 
-        sTest=s2;
+
 
 
 
@@ -209,15 +208,9 @@ public class MainClass extends PApplet {
             renderPoints.remove(p);
         }
         renderPointsToRemove.clear();
-        //System.out.println(circle.getNumberOfPoints());
         mainCircle.update(1/frameRate);
-        //line(0,0,100,100);
 
-        //pushMatrix();
-        //translate(WIDTH/2,HEIGHT/2);
 
-        //popMatrix();
-        //popMatrix();
 
         camera();
         mainMenu.draw();
@@ -286,9 +279,14 @@ public class MainClass extends PApplet {
         }
     }
     public void updateData(){
-        menu.update();
-        mainMenu.update();
         mainCircle.setRadius(mainCircleRadius);
+        if(slideMenu.isVisible())
+            menu.update();
+        mainMenu.update();
+
+
+
+
 
         for(CircleCalc circle:smallCircles){
             circle.setRadius(smallCircleRadius);
@@ -328,7 +326,7 @@ public class MainClass extends PApplet {
                 isPlaying = false;
             }
             else {
-                jingle.play();
+                jingle.loop();
 
                 isPlaying = true;
             }
@@ -345,11 +343,11 @@ public class MainClass extends PApplet {
             }
         }
         if(key=='d'){
-            menu.right();
+            menu.right(0.03f);
 
         }
         if(key=='a'){
-            menu.left();
+            menu.left(0.03f);
 
         }
         if(key=='g'){
@@ -372,11 +370,11 @@ public class MainClass extends PApplet {
     }
 
     int i=0;
+
     private void firework(){
 
 
         if(jingle.position()>=TimeLookupTable.acts[i]){
-            //fireworks.add(new Firework(WIDTH,HEIGHT,30,40,jingle.position(),this));
             i+=i%TimeLookupTable.acts.length;
         }
         for(Firework f : fireworks){
