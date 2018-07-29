@@ -14,6 +14,10 @@ public class Tracker {
 
     PVector loc=new PVector(0,0);
     PVector lerpedLoc=new PVector(0,0);
+    PVector oldPos=new PVector(0,0);
+
+    private float speed;
+    private float lerpedSpeed=0;
 
     public Tracker(Kinect kinect, PApplet applet){
         this.kinect=kinect;
@@ -53,7 +57,7 @@ public class Tracker {
                     if (rawDepth < position) {
                         position = rawDepth;
                     }
-                    if (rawDepth < positionImportant + 15) {
+                    if (rawDepth < positionImportant + 10) {
                         applet.ellipse(x + 500, y + 500, 5, 5);
                         pixelCounter++;
                         sumX += x;
@@ -71,6 +75,21 @@ public class Tracker {
         lerpedLoc.y = PApplet.lerp(lerpedLoc.y, loc.y, 0.3f);
         applet.fill(255,0,0,255);
         applet.ellipse(lerpedLoc.x+500,lerpedLoc.y+500,50,50);
+
+        speed= lerpedLoc.x-oldPos.x;
+        lerpedSpeed=PApplet.lerp(lerpedSpeed,speed,0.3f);
+        System.out.println("speed: "+lerpedSpeed);
+        oldPos.x=lerpedLoc.x;
+        if(lerpedSpeed>30){
+            applet.fill(0,255,0,255);
+            applet.ellipse(500,500,30,30);
+        }
+        if(lerpedSpeed<-20){
+            applet.fill(255,0,0,255);
+            applet.ellipse(500,500,30,30);
+        }
+
+        applet.fill(255,0,0,255);
 
         if(pixelCounter<60){
             applet.ellipse(300,700,20,20);
