@@ -1,9 +1,8 @@
-package gui;
-import javazoom.jl.decoder.Control;
+package src.gui;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Slider;
-import java.applet.Applet;
+
 import java.util.ArrayList;
 
 
@@ -14,7 +13,7 @@ public class SlideMenu {
 
     private final int LENGTH = 400;
     private final int HEIGHT = 100;
-    private final float SPEED  = 0.03f;
+    private float speed = 0.03f;
 
     //Settings
 
@@ -35,7 +34,7 @@ public class SlideMenu {
         MIDPOSX = FRAMEWIDTH/2-LENGTH/2;
         MIDPOSY = FRAMEHEIGHT-150;
         menu = new ControlP5(applet);
-        menu.setUpdate(true);
+        //menu.setUpdate(true);
 
 
 
@@ -51,14 +50,14 @@ public class SlideMenu {
     }
 
     public void update(){
-
+        //middle.update();
         if(isMoving){
 
             isMoving=move();
         }
-        left.update();
-        middle.update();
-        right.update();
+        //left.update();
+        //middle.update();
+        //right.update();
 
     }
 
@@ -97,35 +96,45 @@ public class SlideMenu {
             }
 
             direction = 0;
-            left.update();
-            middle.update();
-            right.update();
+            //left.update();
+            //middle.update();
+            //right.update();
 
             return false;
 
 
         }
-        i+=SPEED;
+        i+= speed;
         return true;
 
     }
 
-    public void right(){
+    public void right(float speed){
 
         if(!isMoving) {
+            this.speed=speed;
             i=0;
             isMoving = true;
             direction = -1;
         }
     }
-    public void left(){
+    public void left(float speed){
 
         if(!isMoving) {
+            this.speed=speed;
             i=0;
             isMoving = true;
             direction = 1;
         }
     }
+
+    public void setValue(){
+
+    }
+
+
+
+
 
     private void setupMenu(){
         s1=menu.addSlider("mainCircleRotSpeed").setMax(1);

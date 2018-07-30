@@ -1,6 +1,7 @@
 package src;
 
 import processing.core.PApplet;
+import src.data.TimeLookupTable;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class Firework {
         this.applet = applet;
         this.start = time;
         this.verschiebung = (float) Math.random()*500f+50f;
-        strechX = (float)((Math.random()+0.5)/(verschiebung*0.01));
+        strechX = (float)((Math.random()+0.1)*(100/verschiebung));
 
         strechY = (float)(Math.random()+0.5/(verschiebung*0.1));
         //strechY = 1;
@@ -51,19 +52,29 @@ public class Firework {
 
     public boolean move (float time){
         float t = (time-start)*0.01f;
-        System.out.println(t);
         //x = (int) (speed *(float)Math.cos(Math.toRadians(a))*(t));
         //y= (int) -(((-9.81f/2)*t*t+speed*Math.sin(Math.toRadians(a)*t)));
-        x = (int) (t*100);
-        y = (int) ((Math.pow(x-verschiebung,2)-verschiebung*verschiebung)*0.001f);
+        tail = new ArrayList<>();
 
+        for(int i = 0; i<10; i++) {
+
+            //double j = Math.random()*i*2-i*2;
+            double j=0;
+            x = (int) (t* 100);
+            y = (int) ((Math.pow((x-i*20) - verschiebung, 2) - verschiebung * verschiebung) * 0.001f);
+            tail.add(new int[] {(int) ((x-i*20)*strechX*direction+j),(int)(y*strechY)});
+
+        }
         speed*=0.991f;
 
-        tail.add(new int[] {(int) (x*strechX*direction),(int)(y*strechY)});
-        if(tail.size()>3)
+        //tail.add(new int[] {(int) (x*strechX*direction),(int)(y*strechY)});
+
+
+        if(tail.size()>100)
             tail.remove(0);
 
-        if (y>height+200){
+        if (1080<tail.get(tail.size()-1)[1]){
+            System.out.println("Stop@: " + y);
             return false;
         }
         return true;
@@ -71,7 +82,7 @@ public class Firework {
     public void draw(){
 
         for (int[] i : tail){
-            applet.fill(255,255,255,100/tail.size()*(tail.indexOf(i)+1));
+            applet.fill(255,255,255,255-255/tail.size()*(tail.indexOf(i)+1));
             applet.ellipse(i[0],i[1],radius,radius);        }
     }
 
