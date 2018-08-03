@@ -2,6 +2,7 @@ package src;
 
 import damkjer.ocd.Camera;
 import src.data.TimeLookupTable;
+import src.gui.LeftMenu;
 import src.gui.MainMenu;
 import src.gui.SlideMenu;
 import controlP5.*;
@@ -31,8 +32,10 @@ public class MainClass extends PApplet {
     FFT fft;
     damkjer.ocd.Camera cam;
     SlideMenu menu;
+    LeftMenu menu2;
     ControlP5 mainMenu;
     ControlP5 slideMenu;
+    ControlP5 leftMenu;
     //circles setup
     CircleCalc mainCircle;
 
@@ -108,6 +111,10 @@ public class MainClass extends PApplet {
         slideMenu.setVisible(false);
 
         //new Main Menu;
+        menu2 = new LeftMenu(this,HEIGHT,WIDTH);
+        leftMenu = menu2.getMenu();
+        slideMenu.setAutoDraw(false);
+        slideMenu.setVisible(true);
 
 
 
@@ -151,13 +158,10 @@ public class MainClass extends PApplet {
     }
     int x = 0;
     public void draw(){
+        leftMenu.draw();
+        leftMenu.update();
 
-
-
-
-        if(false){
-            return;
-        }
+        mousePosition();
 
         if(!isPlaying)
             return;
@@ -462,8 +466,12 @@ public class MainClass extends PApplet {
     }
     ArrayList <Firework> fireworks = new ArrayList<>();
 
-    public void wonderfull(){
-
+    public void mousePosition(){
+        if(mouseX>WIDTH-500) {
+            menu2.update(true);
+        }
+        else
+            menu2.update(false);
 
 
 
