@@ -1,6 +1,7 @@
 package src;
 
 import damkjer.ocd.Camera;
+
 import src.data.TimeLookupTable;
 import src.gui.LeftMenu;
 import src.gui.MainMenu;
@@ -20,6 +21,7 @@ public class MainClass extends PApplet {
 
     private final int HEIGHT = 1080;
     private final int WIDTH = 1920;
+
 
 
 

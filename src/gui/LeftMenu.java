@@ -1,18 +1,24 @@
 package src.gui;
 
+import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Slider;
 import processing.core.PApplet;
 import src.MainClass;
+import processing.core.PFont;
 
+import java.awt.*;
 import java.util.ArrayList;
+
+
+
 
 public class LeftMenu {
 
     float[] parameter;
-
-
-
+    Font f = new Font(Font.SANS_SERIF,1,15);
+    PFont font = new PFont(f,false);
+    CColor color;
 
 
     private final int WIDTH;
@@ -38,6 +44,8 @@ public class LeftMenu {
 
     public LeftMenu(PApplet applet, int height, int width)
     {
+
+        color = new CColor(0x50100000,0xffff0000,0x50ffffff,0xffffffff,0xffffffff);
         this.WIDTH = width;
         this.HEIGHT = height;
         this.applet = applet;
@@ -49,18 +57,25 @@ public class LeftMenu {
         xPos = WIDTH+length;
         yPos = 50;
 
-        lMenu.add(menu.addSlider("mainCircleRotSpeed")  .setMax(1).setValue(100))  ;
-        lMenu.add(menu.addSlider("mainCircleRadius")    .setMax(700) ) ;
-        lMenu.add(menu.addSlider("pointRadius")         .setMax(200)  );
-        lMenu.add(menu.addSlider("smallCircleRadius")   .setMax(300)  );
-        lMenu.add(menu.addSlider("smallCircleRotSpeed") .setMax(9)    );
-        lMenu.add(menu.addSlider("lifeSpan")            .setMax(10)   );
+        lMenu.add(menu.addSlider("mainCircleRotSpeed")  .setMax(1).setValue(100) .setCaptionLabel("Main Speed")    );
+        lMenu.add(menu.addSlider("mainCircleRadius")    .setMax(700)             .setCaptionLabel("Main Radius")    );
+        //lMenu.add(menu.addSlider("numberOfCircles")      .setMax(10)             .setCaptionLabel("Number Circles")    );
+        //lMenu.add(menu.addSlider("numberOfSmallPoints") .setMax(5)             .setCaptionLabel("Number Points")    );
+        lMenu.add(menu.addSlider("pointRadius")         .setMax(200)             .setCaptionLabel("Point Size")    );
+        lMenu.add(menu.addSlider("smallCircleRadius")   .setMax(300)             .setCaptionLabel("Small Radius")    );
+        lMenu.add(menu.addSlider("smallCircleRotSpeed") .setMax(9)               .setCaptionLabel("Small Speed")    );
+        lMenu.add(menu.addSlider("lifeSpan")            .setMax(10)              .setCaptionLabel("Lifespan")    );
 
 
 
         for(Slider s : lMenu){
             s.setHeight(this.height).setWidth(this.length).setPosition(xPos,yPos+(lMenu.indexOf(s)*(this.height+50))).setVisible(true);
             s.update();
+            s.setColor(color);
+            s.setFont(font);
+
+
+
 
         }
         menu.update();
@@ -81,7 +96,7 @@ public class LeftMenu {
         }
 
         //xPos = (int) (applet.bezierPoint(WIDTH/2+length*2,WIDTH/2+length*2+10,WIDTH/2-length+10,WIDTH/2-length,cnt));
-        xPos = (int) (applet.bezierPoint(WIDTH+length,WIDTH+length*2+10,WIDTH-length+10-100,WIDTH-length-100,cnt));
+        xPos = (int) (applet.bezierPoint(WIDTH+length,WIDTH+length*2+10,WIDTH-length+50-200,WIDTH-length-200,cnt));
         System.out.println(xPos);
         cnt+=i*0.1;
         return true;
