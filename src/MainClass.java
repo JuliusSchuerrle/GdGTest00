@@ -1,5 +1,8 @@
+package src;
+
 import damkjer.ocd.Camera;
 import src.data.TimeLookupTable;
+import src.gui.MainMenu;
 import src.gui.SlideMenu;
 import controlP5.*;
 import controlP5.ControlP5;
@@ -14,8 +17,8 @@ import java.util.ArrayList;
 
 public class MainClass extends PApplet {
 
-    public final int HEIGHT = 1080;
-    public final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
+    private final int WIDTH = 1920;
 
 
 
@@ -34,6 +37,7 @@ public class MainClass extends PApplet {
     CircleCalc mainCircle;
 
 
+    private boolean menuTest=false;
 
     private boolean isPlaying = true;
 
@@ -75,7 +79,7 @@ public class MainClass extends PApplet {
     ArrayList<RenderPoint> renderPointsToRemove;
     public static void main(String[] args){
 
-        PApplet.main("MainClass");
+        PApplet.main("src.MainClass");
         System.out.println("hello");
     }
 
@@ -102,6 +106,13 @@ public class MainClass extends PApplet {
         slideMenu = menu.getMenu();
         slideMenu.setAutoDraw(false);
         slideMenu.setVisible(false);
+
+        //new Main Menu;
+
+
+
+
+
 
         mainMenu=new ControlP5(this);
         mainMenu.setAutoDraw(false);
@@ -213,8 +224,9 @@ public class MainClass extends PApplet {
 
 
         camera();
-        mainMenu.draw();
+        //mainMenu.draw();
         slideMenu.draw();
+
 
 //        try {
 //            PImage img = kinect.getDepthImage();
@@ -353,6 +365,7 @@ public class MainClass extends PApplet {
         if(key=='g'){
             jingle.skip(10000);
         }
+
 //        if(key==PApplet.ESC){
 //            kinect.stopDepth();
 //        }
@@ -367,6 +380,70 @@ public class MainClass extends PApplet {
 
     public int getWIDTH() {
         return WIDTH;
+    }
+
+    public float getMainCircleRadius() {
+        return mainCircleRadius;
+    }
+
+    public void setMainCircleRadius(float mainCircleRadius) {
+        this.mainCircleRadius = mainCircleRadius;
+    }
+
+    public float getMainCircleRotSpeed() {
+        return mainCircleRotSpeed;
+    }
+
+    public void setMainCircleRotSpeed(float mainCircleRotSpeed) {
+        this.mainCircleRotSpeed = mainCircleRotSpeed;
+    }
+
+    public int getNumberOfCircles() {
+        return numberOfCircles;
+    }
+
+    public void setNumberOfCircles(int numberOfCircles) {
+        this.numberOfCircles = numberOfCircles;
+    }
+
+    public float getSmallCircleRadius() {
+        return smallCircleRadius;
+    }
+
+    public void setSmallCircleRadius(float smallCircleRadius) {
+        this.smallCircleRadius = smallCircleRadius;
+    }
+
+    public float getSmallCircleRotSpeed() {
+        return smallCircleRotSpeed;
+    }
+
+    public void setSmallCircleRotSpeed(float smallCircleRotSpeed) {
+        this.smallCircleRotSpeed = smallCircleRotSpeed;
+    }
+
+    public int getNumberOfSmallPoints() {
+        return numberOfSmallPoints;
+    }
+
+    public void setNumberOfSmallPoints(int numberOfSmallPoints) {
+        this.numberOfSmallPoints = numberOfSmallPoints;
+    }
+
+    public float getPointRadius() {
+        return pointRadius;
+    }
+
+    public void setPointRadius(float pointRadius) {
+        this.pointRadius = pointRadius;
+    }
+
+    public float getLifeSpan() {
+        return lifeSpan;
+    }
+
+    public void setLifeSpan(float lifeSpan) {
+        this.lifeSpan = lifeSpan;
     }
 
     int i=0;
