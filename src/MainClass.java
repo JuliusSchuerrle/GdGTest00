@@ -31,18 +31,19 @@ public class MainClass extends PApplet {
     AudioPlayer jingle;
     FFT fft;
     damkjer.ocd.Camera cam;
-    SlideMenu menu;
     LeftMenu menu2;
+    SlideMenu menu;
+    ControlP5 leftMenu;
     ControlP5 mainMenu;
     ControlP5 slideMenu;
-    ControlP5 leftMenu;
+
     //circles setup
     CircleCalc mainCircle;
 
 
     private boolean menuTest=false;
 
-    private boolean isPlaying = true;
+    private static boolean isPlaying = true;
 
     private float mainCircleRadius=200;
     private float mainCircleRotSpeed=0.1f;  //0.1f
@@ -53,10 +54,10 @@ public class MainClass extends PApplet {
     private float smallCircleRotSpeed=1f;
     private int numberOfSmallPoints=2;
 
-    private float pointRadius=50.f;
+    private static float pointRadius=50.f;
 
     //private float lifeSpan=30.f;
-    private float lifeSpan=1.f;
+    private static float lifeSpan=1.f;
 
     //FFT variables
     float pos=135;
@@ -113,8 +114,8 @@ public class MainClass extends PApplet {
         //new Main Menu;
         menu2 = new LeftMenu(this,HEIGHT,WIDTH);
         leftMenu = menu2.getMenu();
-        slideMenu.setAutoDraw(false);
-        slideMenu.setVisible(true);
+        leftMenu.setAutoDraw(false);
+        leftMenu.setVisible(true);
 
 
 
@@ -158,8 +159,8 @@ public class MainClass extends PApplet {
     }
     int x = 0;
     public void draw(){
-        leftMenu.draw();
-        leftMenu.update();
+
+
 
         mousePosition();
 
@@ -184,6 +185,8 @@ public class MainClass extends PApplet {
         updateColors();
         background(0);
         strokeWeight(0);
+
+
 
         for(int i=0;i<numberOfCircles;i++){
             for(int k=0;k<numberOfSmallPoints;k++){
@@ -228,8 +231,9 @@ public class MainClass extends PApplet {
 
 
         camera();
-        //mainMenu.draw();
+        mainMenu.draw();
         slideMenu.draw();
+        leftMenu.draw();
 
 
 //        try {
@@ -299,6 +303,7 @@ public class MainClass extends PApplet {
         if(slideMenu.isVisible())
             menu.update();
         mainMenu.update();
+        leftMenu.update();
 
 
 
@@ -386,69 +391,7 @@ public class MainClass extends PApplet {
         return WIDTH;
     }
 
-    public float getMainCircleRadius() {
-        return mainCircleRadius;
-    }
 
-    public void setMainCircleRadius(float mainCircleRadius) {
-        this.mainCircleRadius = mainCircleRadius;
-    }
-
-    public float getMainCircleRotSpeed() {
-        return mainCircleRotSpeed;
-    }
-
-    public void setMainCircleRotSpeed(float mainCircleRotSpeed) {
-        this.mainCircleRotSpeed = mainCircleRotSpeed;
-    }
-
-    public int getNumberOfCircles() {
-        return numberOfCircles;
-    }
-
-    public void setNumberOfCircles(int numberOfCircles) {
-        this.numberOfCircles = numberOfCircles;
-    }
-
-    public float getSmallCircleRadius() {
-        return smallCircleRadius;
-    }
-
-    public void setSmallCircleRadius(float smallCircleRadius) {
-        this.smallCircleRadius = smallCircleRadius;
-    }
-
-    public float getSmallCircleRotSpeed() {
-        return smallCircleRotSpeed;
-    }
-
-    public void setSmallCircleRotSpeed(float smallCircleRotSpeed) {
-        this.smallCircleRotSpeed = smallCircleRotSpeed;
-    }
-
-    public int getNumberOfSmallPoints() {
-        return numberOfSmallPoints;
-    }
-
-    public void setNumberOfSmallPoints(int numberOfSmallPoints) {
-        this.numberOfSmallPoints = numberOfSmallPoints;
-    }
-
-    public float getPointRadius() {
-        return pointRadius;
-    }
-
-    public void setPointRadius(float pointRadius) {
-        this.pointRadius = pointRadius;
-    }
-
-    public float getLifeSpan() {
-        return lifeSpan;
-    }
-
-    public void setLifeSpan(float lifeSpan) {
-        this.lifeSpan = lifeSpan;
-    }
 
     int i=0;
 
@@ -468,10 +411,10 @@ public class MainClass extends PApplet {
 
     public void mousePosition(){
         if(mouseX>WIDTH-500) {
-            menu2.update(true);
+            menu2.update(true,  mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
         }
         else
-            menu2.update(false);
+            menu2.update(false, mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
 
 
 
