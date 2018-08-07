@@ -11,8 +11,8 @@ public class SlideMenu {
 
     //Settings
 
-    private final int LENGTH = 400;
-    private final int HEIGHT = 100;
+    private final int LENGTH = 100;
+    private final int HEIGHT = 400;
     private float speed = 0.03f;
 
     //Settings
@@ -128,8 +128,11 @@ public class SlideMenu {
         }
     }
 
-    public void setValue(){
-
+    public void setValue(float input){
+         float v=   middle.getMin()+(input*(middle.getMax()-middle.getMin()));
+         middle.setValue(v);
+         middle.update();
+         middle.updateInternalEvents(applet);
     }
 
 

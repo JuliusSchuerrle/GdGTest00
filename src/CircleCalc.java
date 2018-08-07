@@ -28,7 +28,6 @@ public class CircleCalc {
         rel=new float[numberOfPoints];
         for(int i=0;i<numberOfPoints;i++){
             rel[i]=((float)i/(float)numberOfPoints)*(float)(2*Math.PI);
-            System.out.println(rel[i]);
         }
 
 

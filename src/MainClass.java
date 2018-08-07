@@ -2,6 +2,8 @@ package src;
 
 import damkjer.ocd.Camera;
 
+import org.openkinect.processing.Kinect;
+import processing.core.PImage;
 import src.data.TimeLookupTable;
 import src.gui.LeftMenu;
 import src.gui.MainMenu;
@@ -25,8 +27,8 @@ public class MainClass extends PApplet {
 
 
 
-    //Kinect kinect;
-    //Tracker tracker;
+    Kinect kinect;
+    Tracker tracker;
 
 
     Minim minim;
@@ -36,7 +38,6 @@ public class MainClass extends PApplet {
     LeftMenu menu2;
     SlideMenu menu;
     ControlP5 leftMenu;
-    ControlP5 mainMenu;
     ControlP5 slideMenu;
 
     //circles setup
@@ -98,12 +99,12 @@ public class MainClass extends PApplet {
 
     public void setup(){
         //f1 = new Firework(WIDTH,HEIGHT,30,100f,4000,this);
-//        kinect=new Kinect(this);
-//        kinect.activateDevice(0);
-//        kinect.initDepth();
-//        kinect.setTilt(10);
+        kinect=new Kinect(this);
+        kinect.activateDevice(0);
+        kinect.initDepth();
+        kinect.setTilt(10);
 
-//        tracker=new Tracker(kinect,this);
+        tracker=new Tracker(kinect,this);
         cam = new Camera(this,200,-250,300);
 
 
@@ -124,18 +125,9 @@ public class MainClass extends PApplet {
 
 
 
-        mainMenu=new ControlP5(this);
-        mainMenu.setAutoDraw(false);
+
 
         //Big circle
-        Knob k1 = mainMenu.addKnob("mainCircleRotSpeed").setRange(0,1).setValue(mainCircleRotSpeed).setPosition(100,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
-        Slider s4=mainMenu.addSlider("mainCircleRadius").setPosition(100,350).setMax(700).setValue(400).setHeight(50).setWidth(200).setLabel("Kreisradius");
-
-        //Small circle
-        Knob k2 = mainMenu.addKnob("smallCircleRotSpeed").setRange(0,9).setValue(smallCircleRotSpeed).setPosition(WIDTH-300,100).setRadius(50).setSize(200,200).setLabel("Kreisgeschwindigkeit");
-        Slider s2=mainMenu.addSlider("smallCircleRadius").setPosition(WIDTH-300,350).setMin(0).setMax(200).setHeight(50).setWidth(200).setLabel("Kreisradius").setValue(smallCircleRadius);
-        Slider s1=mainMenu.addSlider("pointRadius").setPosition(WIDTH-300,450).setMin(0).setMax(200).setHeight(200).setWidth(75).setLabel("Punktgroeße");
-        Slider s3=mainMenu.addSlider("lifeSpan").setPosition(WIDTH-175,450).setMin(0).setMax(10).setValue(lifeSpan).setHeight(200).setWidth(75).setLabel("Lebensdauer");
 
         //DropdownList d1 = jControl.addDropdownList("TESCHD").setPosition(100, 100).setBarHeight(30);
 
@@ -220,7 +212,7 @@ public class MainClass extends PApplet {
             }
         }
 
-       Firework.doFirework(jingle.position(),this);
+       //Firework.doFirework(jingle.position(),this);
 
 
 
@@ -233,18 +225,18 @@ public class MainClass extends PApplet {
 
 
         camera();
-        mainMenu.draw();
+
         slideMenu.draw();
         leftMenu.draw();
 
 
-//        try {
-//            PImage img = kinect.getDepthImage();
-//            image(img, 0, 0);
-//        }catch (Exception e){
-//
-//        }
-//        tracker.update(1/frameRate);
+        try {
+            PImage img = kinect.getDepthImage();
+            image(img, 0, 0);
+        }catch (Exception e){
+
+        }
+        tracker.update(1/frameRate);
         cam.aim(0,0,0);
         cam.jump(0, 0,200+1*1000.f);
         cam.feed();
@@ -304,7 +296,6 @@ public class MainClass extends PApplet {
         mainCircle.setRadius(mainCircleRadius);
         if(slideMenu.isVisible())
             menu.update();
-        mainMenu.update();
         leftMenu.update();
 
 
@@ -317,11 +308,14 @@ public class MainClass extends PApplet {
         }
         final int START = 80;
         final int END = START+32;
-        if(beatCounter>START&&beatCounter<END){
-            mainCircle.setSpeed(0);
-        }else{
-            mainCircle.setSpeed(mainCircleRotSpeed);
-        }
+
+        mainCircle.setSpeed(mainCircleRotSpeed);
+
+       // if(beatCounter>START&&beatCounter<END){
+       //     mainCircle.setSpeed(0);
+       // }else{
+       //     mainCircle.setSpeed(mainCircleRotSpeed);
+       // }
     }
 
     private int colorList[][]={{2,3,255},{1,2,255},{2,3,255},{3,2,255},{2,3,255}};
@@ -356,14 +350,9 @@ public class MainClass extends PApplet {
 
         }
         if(key=='m') {
-            if (!mainMenu.isVisible() && !slideMenu.isVisible()) {
-                mainMenu.setVisible(!mainMenu.isVisible());
-            } else if (mainMenu.isVisible()) {
-                mainMenu.setVisible(!mainMenu.isVisible());
+
                 slideMenu.setVisible(!slideMenu.isVisible());
-            } else {
-                slideMenu.setVisible(!slideMenu.isVisible());
-            }
+
         }
         if(key=='d'){
             menu.right(0.03f);
@@ -377,9 +366,9 @@ public class MainClass extends PApplet {
             jingle.skip(10000);
         }
 
-//        if(key==PApplet.ESC){
-//            kinect.stopDepth();
-//        }
+        if(key=='k'){
+            kinect.stopDepth();
+        }
 
 
     }

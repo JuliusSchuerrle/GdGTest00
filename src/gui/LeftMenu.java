@@ -97,7 +97,7 @@ public class LeftMenu {
 
         //xPos = (int) (applet.bezierPoint(WIDTH/2+length*2,WIDTH/2+length*2+10,WIDTH/2-length+10,WIDTH/2-length,cnt));
         xPos = (int) (applet.bezierPoint(WIDTH+length,WIDTH+length*2+10,WIDTH-length+50-200,WIDTH-length-200,cnt));
-        System.out.println(xPos);
+       // System.out.println(xPos);
         cnt+=i*0.1;
         return true;
 
@@ -118,7 +118,7 @@ public class LeftMenu {
                 s.setHeight(this.height).setWidth(this.length).setPosition(xPos,s.getPosition()[1]);
                 //s.setValue(parameter[lMenu.indexOf(s)]);
                 s.update();
-                System.out.println(s.getPosition()[0]+" "+s.getPosition()[1]);
+              //  System.out.println(s.getPosition()[0]+" "+s.getPosition()[1]);
 
             }
         }
