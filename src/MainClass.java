@@ -1,5 +1,10 @@
+package src;
+
 import damkjer.ocd.Camera;
+
 import src.data.TimeLookupTable;
+import src.gui.LeftMenu;
+import src.gui.MainMenu;
 import src.gui.SlideMenu;
 import controlP5.*;
 import controlP5.ControlP5;
@@ -14,8 +19,9 @@ import java.util.ArrayList;
 
 public class MainClass extends PApplet {
 
-    public final int HEIGHT = 1080;
-    public final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
+    private final int WIDTH = 1920;
+
 
 
 
@@ -27,15 +33,19 @@ public class MainClass extends PApplet {
     AudioPlayer jingle;
     FFT fft;
     damkjer.ocd.Camera cam;
+    LeftMenu menu2;
     SlideMenu menu;
+    ControlP5 leftMenu;
     ControlP5 mainMenu;
     ControlP5 slideMenu;
+
     //circles setup
     CircleCalc mainCircle;
 
 
+    private boolean menuTest=false;
 
-    private boolean isPlaying = true;
+    private static boolean isPlaying = true;
 
     private float mainCircleRadius=200;
     private float mainCircleRotSpeed=0.1f;  //0.1f
@@ -46,10 +56,10 @@ public class MainClass extends PApplet {
     private float smallCircleRotSpeed=1f;
     private int numberOfSmallPoints=2;
 
-    private float pointRadius=50.f;
+    private static float pointRadius=50.f;
 
     //private float lifeSpan=30.f;
-    private float lifeSpan=1.f;
+    private static float lifeSpan=1.f;
 
     //FFT variables
     float pos=135;
@@ -75,7 +85,7 @@ public class MainClass extends PApplet {
     ArrayList<RenderPoint> renderPointsToRemove;
     public static void main(String[] args){
 
-        PApplet.main("MainClass");
+        PApplet.main("src.MainClass");
         System.out.println("hello");
     }
 
@@ -102,6 +112,17 @@ public class MainClass extends PApplet {
         slideMenu = menu.getMenu();
         slideMenu.setAutoDraw(false);
         slideMenu.setVisible(false);
+
+        //new Main Menu;
+        menu2 = new LeftMenu(this,HEIGHT,WIDTH);
+        leftMenu = menu2.getMenu();
+        leftMenu.setAutoDraw(false);
+        leftMenu.setVisible(true);
+
+
+
+
+
 
         mainMenu=new ControlP5(this);
         mainMenu.setAutoDraw(false);
@@ -143,10 +164,7 @@ public class MainClass extends PApplet {
 
 
 
-
-        if(false){
-            return;
-        }
+        mousePosition();
 
         if(!isPlaying)
             return;
@@ -169,6 +187,8 @@ public class MainClass extends PApplet {
         updateColors();
         background(0);
         strokeWeight(0);
+
+
 
         for(int i=0;i<numberOfCircles;i++){
             for(int k=0;k<numberOfSmallPoints;k++){
@@ -215,6 +235,8 @@ public class MainClass extends PApplet {
         camera();
         mainMenu.draw();
         slideMenu.draw();
+        leftMenu.draw();
+
 
 //        try {
 //            PImage img = kinect.getDepthImage();
@@ -283,6 +305,7 @@ public class MainClass extends PApplet {
         if(slideMenu.isVisible())
             menu.update();
         mainMenu.update();
+        leftMenu.update();
 
 
 
@@ -353,6 +376,7 @@ public class MainClass extends PApplet {
         if(key=='g'){
             jingle.skip(10000);
         }
+
 //        if(key==PApplet.ESC){
 //            kinect.stopDepth();
 //        }
@@ -368,6 +392,8 @@ public class MainClass extends PApplet {
     public int getWIDTH() {
         return WIDTH;
     }
+
+
 
     int i=0;
 
@@ -385,8 +411,12 @@ public class MainClass extends PApplet {
     }
     ArrayList <Firework> fireworks = new ArrayList<>();
 
-    public void wonderfull(){
-
+    public void mousePosition(){
+        if(mouseX>WIDTH-500) {
+            menu2.update(true,  mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
+        }
+        else
+            menu2.update(false, mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
 
 
 
