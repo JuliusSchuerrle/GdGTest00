@@ -2,8 +2,10 @@ package src.gui;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Slider;
+import processing.core.PFont;
 import src.MainClass;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -12,8 +14,8 @@ public class SlideMenu {
 
     //Settings
 
-    private final int LENGTH = 100;
-    private final int HEIGHT = 400;
+    private final int LENGTH = 60;
+    private final int HEIGHT = 250;
     private float speed = 0.03f;
 
     //Settings
@@ -25,15 +27,30 @@ public class SlideMenu {
     private final int MIDPOSX;
     private final int MIDPOSY;
     //private final int DISTANCE = 1920/2+LENGTH;
-    private final int DISTANCE = 1920/2+LENGTH;
+    private final int DISTANCE = ((1920/2)+LENGTH*2);
     MainClass applet;
 
     ArrayList<Slider> sliders = new ArrayList<>();
 
+public boolean isButtonSelected=false;
+
+
+
+    Slider s1,s2,s3,s4,s5,s6,s7;
+    private float i = 0f;
+    private int direction = 0;
+    public boolean isMoving = false;
+
+    Font f = new Font(Font.SANS_SERIF,1,15);
+    PFont font = new PFont(f,false);
+
+    private float timePressed=0.f;
+
+
     public SlideMenu(MainClass applet, int FRAMEHEIGHT, int FRAMEWIDTH){
         this.applet = applet;
         MIDPOSX = FRAMEWIDTH/2-LENGTH/2;
-        MIDPOSY = FRAMEHEIGHT-150;
+        MIDPOSY = FRAMEHEIGHT-350;
         menu = new ControlP5(applet);
         //menu.setUpdate(true);
 
@@ -59,6 +76,19 @@ public class SlideMenu {
         //left.update();
         //middle.update();
         //right.update();
+        if(!isButtonSelected){
+            middle.setValue(applet.lookupTable.table.get(sliders.indexOf(middle))[applet.positionInArray]);
+        }
+        left.setValue(applet.lookupTable.table.get(sliders.indexOf(left))[applet.positionInArray]);
+        right.setValue(applet.lookupTable.table.get(sliders.indexOf(right))[applet.positionInArray]);
+        for(int i=0;i<6;i++){
+            if(isButtonSelected){
+                if(sliders.get(i).equals(middle)){
+                    continue;
+                }
+            }
+            sliders.get(i).setValue(applet.lookupTable.table.get(i)[applet.positionInArray]);
+        }
 
     }
 
@@ -67,6 +97,7 @@ public class SlideMenu {
 
 
     public boolean move(){
+
         float xMove =  applet.bezierPoint(0,-10,DISTANCE-100f,DISTANCE,i);
         float yMoveU = applet.bezierPoint(0,100,110,100,i);;
         float yMoveD = applet.bezierPoint(0,-10,90,100,i);;
@@ -117,6 +148,7 @@ public class SlideMenu {
             i=0;
             isMoving = true;
             direction = -1;
+            isButtonSelected=false;
         }
     }
     public void left(float speed){
@@ -126,6 +158,7 @@ public class SlideMenu {
             i=0;
             isMoving = true;
             direction = 1;
+            isButtonSelected=false;
         }
     }
 
@@ -134,31 +167,54 @@ public class SlideMenu {
          middle.setValue(v);
          middle.update();
          middle.updateInternalEvents(applet);
+         applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
+
+    }
+
+    public void up(){
+        float v=middle.getValue();
+        v+=(middle.getMax()-middle.getMin())*0.005f;
+        middle.setValue(v);
+        middle.update();
+        applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
+        isButtonSelected=true;
+
+    }
+
+    public void down(){
+        float v=middle.getValue();
+        v-=(middle.getMax()-middle.getMin())*0.005f;
+        middle.setValue(v);
+        middle.update();
+        applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
+        isButtonSelected=true;
 
     }
 
 
 
 
-
     private void setupMenu(){
-        s1=menu.addSlider("mainCircleRotSpeed").setMax(1);
-        s2=menu.addSlider("mainCircleRadius").setMax(700);
-        s3=menu.addSlider("pointRadius").setMax(200);
-        s4=menu.addSlider("smallCircleRadius").setMax(300);
-        s5=menu.addSlider("smallCircleRotSpeed").setMax(9);
-        s6=menu.addSlider("lifeSpan").setMax(10);
-
+        s1=menu.addSlider("mainCircleRotSpeed")  .setMax(1).setValue(100) .setCaptionLabel("Main Speed"    );
+        s2=menu.addSlider("mainCircleRadius")    .setMax(700)             .setCaptionLabel("Main Radius"    );
+        s3=menu.addSlider("pointRadius")         .setMax(200)             .setCaptionLabel("Point Size"    );
+        s4=menu.addSlider("smallCircleRadius")   .setMax(300)             .setCaptionLabel("Small Radius"    );
+        s5=menu.addSlider("smallCircleRotSpeed") .setMax(9)               .setCaptionLabel("Small Speed"    );
+        s6=menu.addSlider("lifeSpan")            .setMax(30)              .setCaptionLabel("Lifespan"    );
+        s7=menu.addSlider("");
         sliders.add(s1);
         sliders.add(s2);
         sliders.add(s3);
         sliders.add(s4);
         sliders.add(s5);
         sliders.add(s6);
+        sliders.add(s7);
 
         for(Slider s: sliders){
             s.setWidth(LENGTH).setHeight(HEIGHT).setVisible(false);
+            s.setFont(font);
         }
+
 
 
         left = s2;
@@ -175,6 +231,15 @@ public class SlideMenu {
         left.setVisible(true);
         middle.setVisible(true);
         right.setVisible(true);
+        if(left==s7){
+            left.setVisible(false);
+        }
+        if(middle==s7){
+            middle.setVisible(false);
+        }
+        if(right==s7){
+            right.setVisible(false);
+        }
     }
 
 
@@ -203,10 +268,7 @@ public class SlideMenu {
     }
 
 
-    Slider s1,s2,s3,s4,s5,s6;
-    private float i = 0f;
-    private int direction = 0;
-    public boolean isMoving = false;
+
 
 
 }

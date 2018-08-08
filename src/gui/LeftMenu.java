@@ -23,10 +23,10 @@ public class LeftMenu {
 
     private final int WIDTH;
     private final int HEIGHT;
-    private PApplet applet;
+    private MainClass applet;
     float cnt = 0;
 
-    ArrayList<Slider> lMenu = new ArrayList<>();
+     public ArrayList<Slider> lMenu = new ArrayList<>();
 
     private ControlP5 menu;
 
@@ -42,7 +42,7 @@ public class LeftMenu {
 
 
 
-    public LeftMenu(PApplet applet, int height, int width)
+    public LeftMenu(MainClass applet, int height, int width)
     {
 
         color = new CColor(0x50100000,0xffff0000,0x50ffffff,0xffffffff,0xffffffff);
@@ -59,12 +59,10 @@ public class LeftMenu {
 
         lMenu.add(menu.addSlider("mainCircleRotSpeed")  .setMax(1).setValue(100) .setCaptionLabel("Main Speed")    );
         lMenu.add(menu.addSlider("mainCircleRadius")    .setMax(700)             .setCaptionLabel("Main Radius")    );
-        //lMenu.add(menu.addSlider("numberOfCircles")      .setMax(10)             .setCaptionLabel("Number Circles")    );
-        //lMenu.add(menu.addSlider("numberOfSmallPoints") .setMax(5)             .setCaptionLabel("Number Points")    );
         lMenu.add(menu.addSlider("pointRadius")         .setMax(200)             .setCaptionLabel("Point Size")    );
         lMenu.add(menu.addSlider("smallCircleRadius")   .setMax(300)             .setCaptionLabel("Small Radius")    );
         lMenu.add(menu.addSlider("smallCircleRotSpeed") .setMax(9)               .setCaptionLabel("Small Speed")    );
-        lMenu.add(menu.addSlider("lifeSpan")            .setMax(10)              .setCaptionLabel("Lifespan")    );
+        lMenu.add(menu.addSlider("lifeSpan")            .setMax(30)              .setCaptionLabel("Lifespan")    );
 
 
 
@@ -120,11 +118,18 @@ public class LeftMenu {
                 s.update();
               //  System.out.println(s.getPosition()[0]+" "+s.getPosition()[1]);
 
+
             }
         }
+
+        lMenu.get(0).setValue(applet.lookupTable.value1[applet.positionInArray]);
+        lMenu.get(1).setValue(applet.lookupTable.value2[applet.positionInArray]);
+        lMenu.get(2).setValue(applet.lookupTable.value3[applet.positionInArray]);
+        lMenu.get(3).setValue(applet.lookupTable.value4[applet.positionInArray]);
+        lMenu.get(4).setValue(applet.lookupTable.value5[applet.positionInArray]);
+        lMenu.get(5).setValue(applet.lookupTable.value6[applet.positionInArray]);
+       // lMenu.get(6).setValue(applet.lookupTable.value7[applet.positionInArray]);
         menu.update();
-
-
     };
 
     public ControlP5 getMenu(){

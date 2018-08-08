@@ -17,6 +17,7 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 import src.*;
+import src.gui.StartMenu;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class MainClass extends PApplet {
 
 
     Kinect kinect;
-    Tracker tracker;
+    public Tracker tracker;
 
 
     Minim minim;
@@ -40,14 +41,21 @@ public class MainClass extends PApplet {
     damkjer.ocd.Camera cam;
     LeftMenu menu2;
     SlideMenu menu;
+    StartMenu startMenu;
+
     ControlP5 leftMenu;
     ControlP5 slideMenu;
+
 
     //circles setup
     CircleCalc mainCircle;
 
+    public int positionInArray=0;
+    private int positionCounter=0;
+
 
     private boolean menuTest=false;
+    private boolean isPaused=true;
 
     private static boolean isPlaying = true;
 
@@ -105,14 +113,17 @@ public class MainClass extends PApplet {
 
         lookupTable=new LookupTables();
 
-
+        kinect = new Kinect(this);
         //f1 = new Firework(WIDTH,HEIGHT,30,100f,4000,this);
-        kinect=new Kinect(this);
-        kinect.activateDevice(0);
-        kinect.initDepth();
-        kinect.setTilt(10);
+        if(kinect.numDevices()>0) {
 
-        tracker=new Tracker(kinect,this);
+            kinect.activateDevice(0);
+            kinect.initDepth();
+            kinect.setTilt(10);
+
+
+            tracker = new Tracker(kinect, this);
+        }
         cam = new Camera(this,200,-250,300);
 
 
@@ -122,11 +133,16 @@ public class MainClass extends PApplet {
         slideMenu.setAutoDraw(false);
         slideMenu.setVisible(false);
 
+
+        startMenu=new StartMenu(this);
+        startMenu.menu.setAutoDraw(false);
+        startMenu.menu.setVisible(true);
+
         //new Main Menu;
-        menu2 = new LeftMenu(this,HEIGHT,WIDTH);
-        leftMenu = menu2.getMenu();
-        leftMenu.setAutoDraw(false);
-        leftMenu.setVisible(true);
+       // menu2 = new LeftMenu(this,HEIGHT,WIDTH);
+       // leftMenu = menu2.getMenu();
+       // leftMenu.setAutoDraw(false);
+       // leftMenu.setVisible(true);
 
 
 
@@ -148,7 +164,7 @@ public class MainClass extends PApplet {
 
         minim = new Minim(this);
         jingle = minim.loadFile("song.mp3", 2048);
-        jingle.loop();
+        //jingle.loop();
         fft = new FFT(jingle.bufferSize(), jingle.sampleRate());
         mainCircle=new CircleCalc(numberOfCircles,0,mainCircleRotSpeed,mainCircleRadius);
         smallCircles=new ArrayList<CircleCalc>();
@@ -159,22 +175,45 @@ public class MainClass extends PApplet {
         renderPointsToRemove=new ArrayList<RenderPoint>();
 
     }
+
+
+    public void controlEvent(ControlEvent e) {
+
+    }
+
+
+
     int x = 0;
     public void draw(){
 
 
 
-        mousePosition();
+       // mousePosition();
 
         if(!isPlaying)
             return;
 
+        positionInArray=(int)(jingle.position()/16.6666666666f);
+
+        if(positionInArray>3179){
+            positionInArray=3179;
+        }
+      // System.out.println("pos in Array: "+positionInArray);
         //Debug
         /*
         System.out.println(frameRate+"    "+renderPoints.size());
         System.out.println(beatCounter);
            */
+        if(keyPressed){
 
+            if(key=='w'){
+                menu.up();
+            }
+
+            if(key=='s'){
+                menu.down();
+            }
+        }
 
 
         dt = 1 / frameRate;
@@ -188,7 +227,7 @@ public class MainClass extends PApplet {
         background(0);
         strokeWeight(0);
 
-        System.out.println(jingle.position());
+       // System.out.println(jingle.position());
 
         for(int i=0;i<numberOfCircles;i++){
             for(int k=0;k<numberOfSmallPoints;k++){
@@ -235,20 +274,51 @@ public class MainClass extends PApplet {
         camera();
 
         slideMenu.draw();
-        leftMenu.draw();
+        startMenu.menu.draw();
+       // leftMenu.draw();
 
+        if(kinect.numDevices()>0) {
+            try {
+                PImage img = kinect.getDepthImage();
+                image(img, 0, 0);
+            } catch (Exception e) {
 
-        try {
-            PImage img = kinect.getDepthImage();
-            image(img, 0, 0);
-        }catch (Exception e){
-
+            }
+            tracker.update(1 / frameRate);
         }
-        tracker.update(1/frameRate);
         cam.aim(0,0,0);
         cam.jump(0, 0,200+1*1000.f);
         cam.feed();
 
+
+
+
+
+
+     //   if (menu2.lMenu.get(0).isMouseOver()) {
+     //       System.out.println("value: " + mainCircleRotSpeed);
+     //       lookupTable.setValues(0,positionInArray,mainCircleRotSpeed);
+     //   }
+     //   if (menu2.lMenu.get(1).isMouseOver()) {
+     //       System.out.println("value: " + mainCircleRadius);
+     //       lookupTable.setValues(1,positionInArray,mainCircleRadius);
+     //   }
+     //   if (menu2.lMenu.get(2).isMouseOver()) {
+     //       System.out.println("value: " + pointRadius);
+     //       lookupTable.setValues(2,positionInArray,pointRadius);
+     //   }
+     //   if (menu2.lMenu.get(3).isMouseOver()) {
+     //       System.out.println("value: " + smallCircleRadius);
+     //       lookupTable.setValues(3,positionInArray,smallCircleRadius);
+     //   }
+     //   if (menu2.lMenu.get(4).isMouseOver()) {
+     //       System.out.println("value: " + smallCircleRotSpeed);
+     //       lookupTable.setValues(4,positionInArray,smallCircleRotSpeed);
+     //   }
+     //   if (menu2.lMenu.get(5).isMouseOver()) {
+     //       System.out.println("value: " + lifeSpan);
+     //       lookupTable.setValues(5,positionInArray,lifeSpan);
+     //   }
     }
 
 
@@ -295,6 +365,7 @@ public class MainClass extends PApplet {
             beatCounter++;
             if (beatCounter >= TimeLookupTable.d.length) {
                 beatCounter = 0;
+                positionCounter = 0;
             }
 
 
@@ -304,7 +375,7 @@ public class MainClass extends PApplet {
         mainCircle.setRadius(mainCircleRadius);
         if(slideMenu.isVisible())
             menu.update();
-        leftMenu.update();
+//        leftMenu.update();
 
 
 
@@ -357,11 +428,11 @@ public class MainClass extends PApplet {
             }
 
         }
-        if(key=='m') {
-
-                slideMenu.setVisible(!slideMenu.isVisible());
-
-        }
+       // if(key=='m') {
+//
+       //         slideMenu.setVisible(!slideMenu.isVisible());
+//
+       // }
         if(key=='d'){
             menu.right(0.03f);
 
@@ -391,6 +462,23 @@ public class MainClass extends PApplet {
     }
 
 
+    public void setPaused(){
+
+      if(!isPaused){
+          jingle.pause();
+          isPaused=true;
+      }else{
+          jingle.loop();
+          isPaused=false;
+      }
+    }
+
+
+    public void play(){
+        slideMenu.setVisible(true);
+        startMenu.menu.setVisible(false);
+        jingle.loop();
+    }
 
     int i=0;
 
@@ -408,14 +496,14 @@ public class MainClass extends PApplet {
     }
     ArrayList <Firework> fireworks = new ArrayList<>();
 
-    public void mousePosition(){
-        if(mouseX>WIDTH-500) {
-            menu2.update(true,  mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
-        }
-        else
-            menu2.update(false, mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
-
-
-
-    }
+   // public void mousePosition(){
+   //     if(mouseX>WIDTH-500) {
+   //         menu2.update(true,  mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
+   //     }
+   //     else
+   //         menu2.update(false, mainCircleRadius,mainCircleRotSpeed, numberOfCircles, smallCircleRadius,smallCircleRotSpeed, numberOfSmallPoints,pointRadius,lifeSpan);
+//
+//
+//
+   // }
 }

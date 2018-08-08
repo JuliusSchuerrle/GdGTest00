@@ -159,6 +159,8 @@ public class Tracker {
             applet.fill(255,0,0,255);
             applet.ellipse(600,200,50,50);
             isButtonSelected=true;
+            applet.menu.isButtonSelected=true;
+
         }
 
 
@@ -169,12 +171,15 @@ public class Tracker {
             applet.ellipse(500,500,30,30);
             applet.menu.left(0.03f);
             isButtonSelected=false;
+            applet.menu.isButtonSelected=false;
         }
         if(lerpedSpeed<-20&&lerpedSpeed>-50){
             applet.fill(255,0,0,255);
             applet.ellipse(500,500,30,30);
             applet.menu.right(0.03f);
             isButtonSelected=false;
+            applet.menu.isButtonSelected=false;
+
         }
 
         applet.fill(255,0,0,255);
