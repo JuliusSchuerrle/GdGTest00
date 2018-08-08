@@ -2,6 +2,7 @@ package src.gui;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Slider;
+import src.MainClass;
 
 import java.util.ArrayList;
 
@@ -25,11 +26,11 @@ public class SlideMenu {
     private final int MIDPOSY;
     //private final int DISTANCE = 1920/2+LENGTH;
     private final int DISTANCE = 1920/2+LENGTH;
-    PApplet applet;
+    MainClass applet;
 
     ArrayList<Slider> sliders = new ArrayList<>();
 
-    public SlideMenu(PApplet applet, int FRAMEHEIGHT, int FRAMEWIDTH){
+    public SlideMenu(MainClass applet, int FRAMEHEIGHT, int FRAMEWIDTH){
         this.applet = applet;
         MIDPOSX = FRAMEWIDTH/2-LENGTH/2;
         MIDPOSY = FRAMEHEIGHT-150;
@@ -133,6 +134,7 @@ public class SlideMenu {
          middle.setValue(v);
          middle.update();
          middle.updateInternalEvents(applet);
+
     }
 
 

@@ -4,6 +4,7 @@ import damkjer.ocd.Camera;
 
 import org.openkinect.processing.Kinect;
 import processing.core.PImage;
+import src.data.LookupTables;
 import src.data.TimeLookupTable;
 import src.gui.LeftMenu;
 import src.gui.MainMenu;
@@ -25,6 +26,8 @@ public class MainClass extends PApplet {
     private final int WIDTH = 1920;
 
 
+
+   public LookupTables lookupTable;
 
 
     Kinect kinect;
@@ -98,6 +101,11 @@ public class MainClass extends PApplet {
 
 
     public void setup(){
+
+
+        lookupTable=new LookupTables();
+
+
         //f1 = new Firework(WIDTH,HEIGHT,30,100f,4000,this);
         kinect=new Kinect(this);
         kinect.activateDevice(0);
@@ -180,7 +188,7 @@ public class MainClass extends PApplet {
         background(0);
         strokeWeight(0);
 
-
+        System.out.println(jingle.position());
 
         for(int i=0;i<numberOfCircles;i++){
             for(int k=0;k<numberOfSmallPoints;k++){
