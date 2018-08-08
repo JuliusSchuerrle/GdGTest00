@@ -278,12 +278,12 @@ public class MainClass extends PApplet {
        // leftMenu.draw();
 
         if(kinect.numDevices()>0) {
-            try {
-                PImage img = kinect.getDepthImage();
-                image(img, 0, 0);
-            } catch (Exception e) {
-
-            }
+           // try {
+           //     PImage img = kinect.getDepthImage();
+           //     image(img, 0, 0);
+           // } catch (Exception e) {
+//
+           // }
             tracker.update(1 / frameRate);
         }
         cam.aim(0,0,0);

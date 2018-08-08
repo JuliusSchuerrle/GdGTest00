@@ -66,8 +66,8 @@ public class Tracker {
 
 
                     if(rawDepth>80000000){          //filters out stuff too close/ far away
-                        applet.fill(0,255,255,255);
-                        applet.ellipse(x + 500, y + 500, 5, 5);
+                      //  applet.fill(0,255,255,255);
+                      //  applet.ellipse(x + 500, y + 500, 5, 5);
                         continue;
                     }
 
@@ -130,7 +130,7 @@ public class Tracker {
                 int rawDepth = depth[offset];
 
                 if (rawDepth < position + 10) {
-                    applet.ellipse(x + 500, y + 500, 5, 5);
+                   // applet.ellipse(x + 500, y + 500, 5, 5);
                     pixelCounter++;
                     sumX += x;
                     sumY += y;
@@ -146,7 +146,7 @@ public class Tracker {
         lerpedLoc.x = PApplet.lerp(lerpedLoc.x, loc.x, 0.3f);
         lerpedLoc.y = PApplet.lerp(lerpedLoc.y, loc.y, 0.3f);
         applet.fill(255,0,0,255);
-        applet.ellipse(lerpedLoc.x+500,lerpedLoc.y+500,50,50);
+        //applet.ellipse(lerpedLoc.x+500,lerpedLoc.y+500,50,50);
 
         speed= lerpedLoc.x-oldPos.x;
         lerpedSpeed=PApplet.lerp(lerpedSpeed,speed,0.3f);
@@ -157,7 +157,7 @@ public class Tracker {
         //System.out.println("lerped depth: "+lerpedDepthSpeed);
         if(lerpedDepthSpeed>10){
             applet.fill(255,0,0,255);
-            applet.ellipse(600,200,50,50);
+            //applet.ellipse(600,200,50,50);
             isButtonSelected=true;
             applet.menu.isButtonSelected=true;
 
@@ -168,14 +168,14 @@ public class Tracker {
         oldPos.x=lerpedLoc.x;
         if(lerpedSpeed>20&&lerpedSpeed<50){
             applet.fill(0,255,0,255);
-            applet.ellipse(500,500,30,30);
+           // applet.ellipse(500,500,30,30);
             applet.menu.left(0.03f);
             isButtonSelected=false;
             applet.menu.isButtonSelected=false;
         }
         if(lerpedSpeed<-20&&lerpedSpeed>-50){
             applet.fill(255,0,0,255);
-            applet.ellipse(500,500,30,30);
+            //applet.ellipse(500,500,30,30);
             applet.menu.right(0.03f);
             isButtonSelected=false;
             applet.menu.isButtonSelected=false;
@@ -185,7 +185,7 @@ public class Tracker {
         applet.fill(255,0,0,255);
 
         if(pixelCounter<30){
-            applet.ellipse(300,700,20,20);
+            //applet.ellipse(300,700,20,20);
         }
 
         if(isButtonSelected){
