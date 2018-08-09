@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 
-public class LeftMenu {
+public class RightMenu {
 
     float[] parameter;
     Font f = new Font(Font.SANS_SERIF,1,15);
@@ -42,7 +42,7 @@ public class LeftMenu {
 
 
 
-    public LeftMenu(MainClass applet, int height, int width)
+    public RightMenu(MainClass applet, int height, int width)
     {
 
         color = new CColor(0x50100000,0xffff0000,0x50ffffff,0xffffffff,0xffffffff);

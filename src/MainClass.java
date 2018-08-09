@@ -6,7 +6,7 @@ import org.openkinect.processing.Kinect;
 import processing.core.PImage;
 import src.data.LookupTables;
 import src.data.TimeLookupTable;
-import src.gui.LeftMenu;
+import src.gui.RightMenu;
 import src.gui.MainMenu;
 import src.gui.SlideMenu;
 import controlP5.*;
@@ -39,11 +39,11 @@ public class MainClass extends PApplet {
     AudioPlayer jingle;
     FFT fft;
     damkjer.ocd.Camera cam;
-    LeftMenu menu2;
+    RightMenu menu2;
     SlideMenu menu;
     StartMenu startMenu;
 
-    ControlP5 leftMenu;
+    ControlP5 rightMenu;
     ControlP5 slideMenu;
 
 
@@ -140,9 +140,9 @@ public class MainClass extends PApplet {
 
         //new Main Menu;
        // menu2 = new LeftMenu(this,HEIGHT,WIDTH);
-       // leftMenu = menu2.getMenu();
-       // leftMenu.setAutoDraw(false);
-       // leftMenu.setVisible(true);
+       // rightMenu = menu2.getMenu();
+       // rightMenu.setAutoDraw(false);
+       // rightMenu.setVisible(true);
 
 
 
@@ -275,7 +275,7 @@ public class MainClass extends PApplet {
 
         slideMenu.draw();
         startMenu.menu.draw();
-       // leftMenu.draw();
+       // rightMenu.draw();
 
         if(kinect.numDevices()>0) {
            // try {
@@ -375,7 +375,7 @@ public class MainClass extends PApplet {
         mainCircle.setRadius(mainCircleRadius);
         if(slideMenu.isVisible())
             menu.update();
-//        leftMenu.update();
+//        rightMenu.update();
 
 
 

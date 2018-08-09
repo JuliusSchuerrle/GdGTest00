@@ -243,31 +243,6 @@ public boolean isButtonSelected=false;
     }
 
 
-    private float interpolation(int start, int end , float i){
-        return applet.bezierPoint(start,start-10,end+100,end,i);
-
-        /*
-        float y = (float) Math.sin(i*Math.PI-0.5f*Math.PI)*(end/2f)+(end/2f);
-        System.out.println(y);
-        return y;
-        */
-
-
-
-
-
-        /* float speed;
-        if(i<end-start/2)
-            speed = i-start+0.1f;
-        else
-            speed= end-i+0.1f;
-        return i+0.1f*speed;
-        */
-
-
-    }
-
-
 
 
 
