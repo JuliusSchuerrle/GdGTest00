@@ -1,9 +1,10 @@
 package src.gui;
-import processing.core.PApplet;
+import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Slider;
 import processing.core.PFont;
 import src.MainClass;
+import src.data.data;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,10 +14,15 @@ public class SlideMenu {
     ControlP5 menu;
 
     //Settings
+    CColor color = data.cColors[0];
 
-    private final int LENGTH = 60;
-    private final int HEIGHT = 250;
+    //private final int LENGTH = 60;
+    private final int LENGTH = 120;
+    //private final int HEIGHT = 250;
+    private final int HEIGHT = 160;
     private float speed = 0.03f;
+
+
 
     //Settings
 
@@ -41,7 +47,7 @@ public boolean isButtonSelected=false;
     private int direction = 0;
     public boolean isMoving = false;
 
-    Font f = new Font(Font.SANS_SERIF,1,15);
+    Font f = new Font(Font.SANS_SERIF,1,20);
     PFont font = new PFont(f,false);
 
     private float timePressed=0.f;
@@ -212,7 +218,7 @@ public boolean isButtonSelected=false;
 
         for(Slider s: sliders){
             s.setWidth(LENGTH).setHeight(HEIGHT).setVisible(false);
-            s.setFont(font);
+            s.setFont(font).setColor(color);
         }
 
 

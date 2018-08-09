@@ -3,9 +3,9 @@ package src.gui;
 import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Slider;
-import processing.core.PApplet;
 import src.MainClass;
 import processing.core.PFont;
+import src.data.data;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class RightMenu {
     public RightMenu(MainClass applet, int height, int width)
     {
 
-        color = new CColor(0x50100000,0xffff0000,0x50ffffff,0xffffffff,0xffffffff);
+        color = data.cColors[0];
         this.WIDTH = width;
         this.HEIGHT = height;
         this.applet = applet;

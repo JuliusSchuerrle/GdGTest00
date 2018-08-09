@@ -134,7 +134,7 @@ public class MainClass extends PApplet {
         slideMenu.setVisible(false);
 
 
-        startMenu=new StartMenu(this);
+        startMenu=new StartMenu(this,HEIGHT,WIDTH);
         startMenu.menu.setAutoDraw(false);
         startMenu.menu.setVisible(true);
 
@@ -403,7 +403,7 @@ public class MainClass extends PApplet {
         if(jingle.position()>=TimeLookupTable.acts[partCounter]){
 
             //TODO Interpolation
-            //TODO Chose better colors
+            //TODO Chose better cColors
 
             partCounter=(partCounter+1)%5;
             this.r = (int)(Math.random()*(255/2)+(255/4));
@@ -506,4 +506,6 @@ public class MainClass extends PApplet {
 //
 //
    // }
+
+
 }
