@@ -31,6 +31,7 @@ public class LookupTables {
             value4[i]=100.f;
             value5[i]=0.14f;
             value6[i]=2.f;
+            value7[i]=0.f;
         }
     }
 

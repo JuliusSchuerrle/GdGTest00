@@ -22,6 +22,10 @@ public class Tracker {
     private float depthSpeed=0;
     private float lerpedDepthSpeed=0;
 
+
+    private float baselinePos=0.f;
+    private float myBaselinePos=0.f;
+
     int xImp;
     int yImp;
 
@@ -144,7 +148,7 @@ public class Tracker {
              loc = new PVector(sumX/count, sumY/count);
         }
         lerpedLoc.x = PApplet.lerp(lerpedLoc.x, loc.x, 0.3f);
-        lerpedLoc.y = PApplet.lerp(lerpedLoc.y, loc.y, 0.3f);
+        lerpedLoc.y = PApplet.lerp(lerpedLoc.y, loc.y, 0.1f);
         applet.fill(255,0,0,255);
         //applet.ellipse(lerpedLoc.x+500,lerpedLoc.y+500,50,50);
 
@@ -158,8 +162,16 @@ public class Tracker {
         if(lerpedDepthSpeed>10){
             applet.fill(255,0,0,255);
             //applet.ellipse(600,200,50,50);
+            if(isButtonSelected==false){
+                baselinePos=applet.menu.getValue();
+                float inp=(float)(kinect.height)-lerpedLoc.y;
+                inp=inp/(float)(kinect.height);
+                myBaselinePos=inp;
+            }
             isButtonSelected=true;
             applet.menu.isButtonSelected=true;
+
+
 
         }
 
@@ -189,9 +201,13 @@ public class Tracker {
         }
 
         if(isButtonSelected){
-            float inp=(float)lerpedLoc.y/(float)kinect.height;
-            inp=1.f-inp;
-            System.out.println("input value for button: "+kinect.height+"  "+lerpedLoc.y);
+            float inp=(float)(kinect.height)-lerpedLoc.y;
+            inp=inp/(float)(kinect.height);
+            inp=inp-myBaselinePos;
+            inp=inp*1.7f;
+            inp=baselinePos+inp;
+            inp=inp;
+            System.out.println("input value for button: "+inp+"baseline: "+baselinePos);
             applet.menu.setValue(inp);
         }
     }

@@ -42,7 +42,7 @@ public boolean isButtonSelected=false;
 
 
 
-    Slider s1,s2,s3,s4,s5,s6,s7;
+    Slider s1,s2,s3,s4,s5,s6,s7,s8;
     private float i = 0f;
     private int direction = 0;
     public boolean isMoving = false;
@@ -213,6 +213,13 @@ public boolean isButtonSelected=false;
          applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
 
     }
+    public float getValue(){
+        float v=middle.getMax()-middle.getMin();
+        float tmp=middle.getValue()-middle.getMin();
+        v=tmp/v;
+        System.out.println("this is the baseline; "+v);
+        return v;
+    }
 
     public void up(){
         float v=middle.getValue();
@@ -245,6 +252,7 @@ public boolean isButtonSelected=false;
         s5=menu.addSlider("smallCircleRotSpeed") .setMax(9)               .setCaptionLabel("Small Speed"    );
         s6=menu.addSlider("lifeSpan")            .setMax(30)              .setCaptionLabel("Lifespan"    );
         s7=menu.addSlider("");
+        s8=menu.addSlider("selectedColor").setMax(1).setValue(0).setCaptionLabel("color");
         sliders.add(s1);
         sliders.add(s2);
         sliders.add(s3);
@@ -252,7 +260,7 @@ public boolean isButtonSelected=false;
         sliders.add(s5);
         sliders.add(s6);
         sliders.add(s7);
-
+        sliders.add(s8);
         for(Slider s: sliders){
             s.setWidth(LENGTH).setHeight(HEIGHT).setVisible(false);
             s.setFont(font).setColor(color);

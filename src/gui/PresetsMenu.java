@@ -211,12 +211,12 @@ public class PresetsMenu {
     }
 
     private void setupMenu(){
-        s1=menu.addButton("endPresetsMenu").setLabel("preset1");
-        s2=menu.addButton("preset2").setLabel("preset2");
-        s3=menu.addButton("preset3").setLabel("preset3");
+        s1=menu.addButton("setPresets1").setLabel("preset1");
+        s2=menu.addButton("setPresets2").setLabel("preset2");
+        s3=menu.addButton("preset3").setLabel("presets3");
         s4=menu.addButton("preset4");
         s5=menu.addButton("preset5");
-        s6=menu.addButton("preset6");
+        s6=menu.addButton("endPresetsMenu").setLabel("back");
         sliders.add(s1);
         sliders.add(s2);
         sliders.add(s3);

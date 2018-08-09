@@ -55,6 +55,10 @@ public class MainClass extends PApplet {
     //circles setup
     CircleCalc mainCircle;
 
+
+    Colors colors;
+    float selectedColor=0.f;
+
     public int positionInArray=0;
     private int positionCounter=0;
 
@@ -121,6 +125,7 @@ public class MainClass extends PApplet {
 
 
         lookupTable=new LookupTables();
+        colors=new Colors();
 
         kinect = new Kinect(this);
         //f1 = new Firework(WIDTH,HEIGHT,30,100f,4000,this);
@@ -242,7 +247,7 @@ public class MainClass extends PApplet {
         runFFT();
         runBeat();
         updateData();
-        updateColors();
+        //updateColors();
         background(0);
         strokeWeight(0);
 
@@ -364,34 +369,36 @@ public class MainClass extends PApplet {
         }
     }
 
-    public void runBeat(){
+        public void runBeat(){
+
+            r=lerp(colors.getColorForeground().getR(),colors.getColorBackground().getR(),selectedColor);
+            g=lerp(colors.getColorForeground().getG(),colors.getColorBackground().getG(),selectedColor);
+            b=lerp(colors.getColorForeground().getB(),colors.getColorBackground().getB(),selectedColor);
+
+            if (jingle.position() + 10 > TimeLookupTable.d[beatCounter] && jingle.position() - TimeLookupTable.d[beatCounter] < 10000) {
+
+                for(int i=0;i<numberOfCircles;i++){
+                    for(int k=0;k<numberOfSmallPoints;k++){
+                        float x=mainCircle.getPoints().get(i).getX()
+                                +smallCircles.get(i).getPoints().get(k).getX();
+                        float y=mainCircle.getPoints().get(i).getY()+smallCircles.get(i).getPoints().get(k).getY();
+
+                        renderPoints.add(new RenderPoint(x,y,0,r,g,b,255,pointRadius,lifeSpan));
 
 
-
-        if (jingle.position() + 10 > TimeLookupTable.d[beatCounter] && jingle.position() - TimeLookupTable.d[beatCounter] < 10000) {
-
-            for(int i=0;i<numberOfCircles;i++){
-                for(int k=0;k<numberOfSmallPoints;k++){
-                    float x=mainCircle.getPoints().get(i).getX()
-                            +smallCircles.get(i).getPoints().get(k).getX();
-                    float y=mainCircle.getPoints().get(i).getY()+smallCircles.get(i).getPoints().get(k).getY();
-
-                    renderPoints.add(new RenderPoint(x,y,0,r,g,b,255,pointRadius,lifeSpan));
+                    }
 
 
+                }
+                beatCounter++;
+                if (beatCounter >= TimeLookupTable.d.length) {
+                    beatCounter = 0;
+                    positionCounter = 0;
                 }
 
 
             }
-            beatCounter++;
-            if (beatCounter >= TimeLookupTable.d.length) {
-                beatCounter = 0;
-                positionCounter = 0;
-            }
-
-
         }
-    }
     public void updateData(){
         mainCircle.setRadius(mainCircleRadius);
         if(slideMenu.isVisible())
@@ -438,18 +445,7 @@ public class MainClass extends PApplet {
 
     @Override
     public void keyPressed(){
-        if(key==' ') {
-            if (isPlaying) {
-                jingle.pause();
-                isPlaying = false;
-            }
-            else {
-                jingle.loop();
 
-                isPlaying = true;
-            }
-
-        }
        // if(key=='m') {
 //
        //         slideMenu.setVisible(!slideMenu.isVisible());
@@ -511,11 +507,23 @@ public class MainClass extends PApplet {
         if(key=='p'){
             writeToCSV();
         }
-        if(key=='o'){
-            readCSV();
+        if(key==' '){
+            beginStartMenu();
         }
 
 
+    }
+    public void beginStartMenu() {
+        startMenu.isMovingIn=true;
+        startMenu.moveIn();
+        startMenu.menu.setVisible(true);
+        slideMenu.setVisible(false);
+        jingle.pause();
+        beatCounter=0;
+        positionCounter=0;
+        jingle.rewind();
+
+        isPaused=true;
     }
 
 
@@ -613,11 +621,22 @@ public class MainClass extends PApplet {
 //
    // }
 
+    public void setPresets1(){
+        readCSV("Dataset1.csv");
+        endPresetsMenu(1);
+    }
+    public void setPresets2(){
+        readCSV("Dataset2.csv");
+        endPresetsMenu(1);
+    }
+
+
+
 
     public void writeToCSV(){
         PrintWriter pw = null;
         try {
-            pw = new PrintWriter(new File("MyNewData.csv"));
+            pw = new PrintWriter(new File("Dataset2.csv"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -638,6 +657,9 @@ public class MainClass extends PApplet {
             builder.append(',');
             builder.append(lookupTable.value6[i]);
             builder.append(',');
+            builder.append(lookupTable.value7[i]);
+            builder.append(',');
+
 
 
         }
@@ -647,10 +669,10 @@ public class MainClass extends PApplet {
         System.out.println("done!");
     }
 
-    public void readCSV(){
+    public void readCSV(String filename){
         Scanner scanner=null;
         try {
-             scanner = new Scanner(new File("MyNewData.csv"));
+             scanner = new Scanner(new File(filename));
         }catch (java.io.FileNotFoundException e){
             System.out.println("fileNotFound");
         }
@@ -662,7 +684,7 @@ public class MainClass extends PApplet {
 
                 lookupTable.table.get(counter)[counter2] = Float.parseFloat(scanner.next());
                 counter++;
-                if (counter >= 6) {
+                if (counter >= 7) {
                     counter = 0;
                     counter2++;
                     System.out.println("c2:  " + counter2);
