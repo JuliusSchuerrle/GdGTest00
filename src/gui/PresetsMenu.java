@@ -1,4 +1,16 @@
 package src.gui;
+
+import controlP5.*;
+import controlP5.Button;
+import processing.core.PFont;
+import src.MainClass;
+import src.data.data;
+
+import java.awt.*;
+
+/**
+ * Created by js148 on 08.08.2018.
+ */
 import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Slider;
@@ -10,8 +22,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-public class SlideMenu {
-    ControlP5 menu;
+public class PresetsMenu {
+    public   ControlP5 menu;
 
     //Settings
     CColor color = data.cColors[0];
@@ -26,9 +38,9 @@ public class SlideMenu {
 
     //Settings
 
-    private Slider left;
-    private Slider middle;
-    private Slider right;
+    private Button left;
+    private Button middle;
+    private Button right;
 
     private final int MIDPOSX;
     private final int MIDPOSY;
@@ -36,24 +48,22 @@ public class SlideMenu {
     private final int DISTANCE = ((1920/2)+LENGTH*2);
     MainClass applet;
 
-    ArrayList<Slider> sliders = new ArrayList<>();
+    ArrayList<Button> sliders = new ArrayList<>();
 
-public boolean isButtonSelected=false;
+    public boolean isButtonSelected=false;
 
 
 
-    Slider s1,s2,s3,s4,s5,s6,s7;
+    Button s1,s2,s3,s4,s5,s6,s7;
     private float i = 0f;
     private int direction = 0;
     public boolean isMoving = false;
 
 
-
     public boolean isMovingIn=true;
     private float moveInPos=1.f;
-
-
-
+    public boolean isMovingOut=false;
+    private float moveOutPos=0.f;
 
 
     Font f = new Font(Font.SANS_SERIF,1,20);
@@ -62,7 +72,7 @@ public boolean isButtonSelected=false;
     private float timePressed=0.f;
 
 
-    public SlideMenu(MainClass applet, int FRAMEHEIGHT, int FRAMEWIDTH){
+    public PresetsMenu(MainClass applet, int FRAMEHEIGHT, int FRAMEWIDTH){
         this.applet = applet;
         MIDPOSX = FRAMEWIDTH/2-LENGTH/2;
         MIDPOSY = FRAMEHEIGHT-350;
@@ -84,57 +94,24 @@ public boolean isButtonSelected=false;
 
     public void update(){
         //middle.update();
-        if(isMovingIn){
-            isMovingIn=moveIn();
-            if(isMovingIn){
-                isMoving=false;
-                isButtonSelected=false;
-                return;
-            }
-        }
-
         if(isMoving){
 
             isMoving=move();
         }
-
-
-
+        if(isMovingIn){
+            isMovingIn=moveIn();
+        }
+        if(isMovingOut){
+            isMovingOut=moveOut();
+        }
         //left.update();
         //middle.update();
         //right.update();
-        if(!isButtonSelected){
-            middle.setValue(applet.lookupTable.table.get(sliders.indexOf(middle))[applet.positionInArray]);
-        }
-        left.setValue(applet.lookupTable.table.get(sliders.indexOf(left))[applet.positionInArray]);
-        right.setValue(applet.lookupTable.table.get(sliders.indexOf(right))[applet.positionInArray]);
-        for(int i=0;i<6;i++){
-            if(isButtonSelected){
-                if(sliders.get(i).equals(middle)){
-                    continue;
-                }
-            }
-            sliders.get(i).setValue(applet.lookupTable.table.get(i)[applet.positionInArray]);
-        }
+
+
 
     }
 
-
-
-
-
-
-
-
-    public boolean moveIn(){
-        middle.setPosition(MIDPOSX,MIDPOSY+400*moveInPos);
-        if(moveInPos<0.0f){
-            moveInPos=1.f;
-            return false;
-        }
-        moveInPos-=0.04f;
-        return true;
-    }
 
 
 
@@ -154,7 +131,7 @@ public boolean isButtonSelected=false;
         right.setPosition( MIDPOSX+DISTANCE+ direction*xMove,MIDPOSY+100+direction*yMoveU);
 
         if(i > 1.0f){
-        //if(i>DISTANCE)  {
+            //if(i>DISTANCE)  {
             if(direction>0){
                 right.setVisible(false);
                 right=middle;
@@ -205,55 +182,49 @@ public boolean isButtonSelected=false;
         }
     }
 
-    public void setValue(float input){
-         float v=   middle.getMin()+(input*(middle.getMax()-middle.getMin()));
-         middle.setValue(v);
-         middle.update();
-         middle.updateInternalEvents(applet);
-         applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
 
-    }
 
-    public void up(){
-        float v=middle.getValue();
-        v+=(middle.getMax()-middle.getMin())*0.005f;
-        middle.setValue(v);
-        middle.update();
-        applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
-        isButtonSelected=true;
-
-    }
-
-    public void down(){
-        float v=middle.getValue();
-        v-=(middle.getMax()-middle.getMin())*0.005f;
-        middle.setValue(v);
-        middle.update();
-        applet.lookupTable.setValues(sliders.indexOf(middle),applet.positionInArray,v);
-        isButtonSelected=true;
-
+    public void press(){
+        isMovingOut=true;
     }
 
 
+    public boolean moveIn(){
+        middle.setPosition(MIDPOSX,MIDPOSY+300*moveInPos);
+        if(moveInPos<0.0f){
+            moveInPos=1;
+            return false;
+        }
+        moveInPos-=0.05f;
+        return true;
+    }
 
+    public boolean moveOut(){
+        middle.setPosition(MIDPOSX,MIDPOSY+300*moveOutPos);
+        if(moveOutPos>1.0f){
+            moveOutPos=0;
+            middle.setValue(1);
+            return false;
+        }
+        moveOutPos+=0.05f;
+        return true;
+    }
 
     private void setupMenu(){
-        s1=menu.addSlider("mainCircleRotSpeed")  .setMax(1).setValue(100) .setCaptionLabel("Main Speed"    );
-        s2=menu.addSlider("mainCircleRadius")    .setMax(700)             .setCaptionLabel("Main Radius"    );
-        s3=menu.addSlider("pointRadius")         .setMax(200)             .setCaptionLabel("Point Size"    );
-        s4=menu.addSlider("smallCircleRadius")   .setMax(300)             .setCaptionLabel("Small Radius"    );
-        s5=menu.addSlider("smallCircleRotSpeed") .setMax(9)               .setCaptionLabel("Small Speed"    );
-        s6=menu.addSlider("lifeSpan")            .setMax(30)              .setCaptionLabel("Lifespan"    );
-        s7=menu.addSlider("");
+        s1=menu.addButton("endPresetsMenu").setLabel("preset1");
+        s2=menu.addButton("preset2").setLabel("preset2");
+        s3=menu.addButton("preset3").setLabel("preset3");
+        s4=menu.addButton("preset4");
+        s5=menu.addButton("preset5");
+        s6=menu.addButton("preset6");
         sliders.add(s1);
         sliders.add(s2);
         sliders.add(s3);
         sliders.add(s4);
         sliders.add(s5);
         sliders.add(s6);
-        sliders.add(s7);
 
-        for(Slider s: sliders){
+        for(Button s: sliders){
             s.setWidth(LENGTH).setHeight(HEIGHT).setVisible(false);
             s.setFont(font).setColor(color);
         }
@@ -274,15 +245,7 @@ public boolean isButtonSelected=false;
         left.setVisible(true);
         middle.setVisible(true);
         right.setVisible(true);
-        if(left==s7){
-            left.setVisible(false);
-        }
-        if(middle==s7){
-            middle.setVisible(false);
-        }
-        if(right==s7){
-            right.setVisible(false);
-        }
+
     }
 
 

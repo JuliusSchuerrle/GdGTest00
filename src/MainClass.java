@@ -6,9 +6,7 @@ import org.openkinect.processing.Kinect;
 import processing.core.PImage;
 import src.data.LookupTables;
 import src.data.TimeLookupTable;
-import src.gui.RightMenu;
-import src.gui.MainMenu;
-import src.gui.SlideMenu;
+import src.gui.*;
 import controlP5.*;
 import controlP5.ControlP5;
 import controlP5.Slider;
@@ -17,9 +15,14 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 import src.*;
-import src.gui.StartMenu;
 
 import java.util.ArrayList;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class MainClass extends PApplet {
 
@@ -42,6 +45,8 @@ public class MainClass extends PApplet {
     RightMenu menu2;
     SlideMenu menu;
     StartMenu startMenu;
+    ColorMenu colorMenu;
+    PresetsMenu presetsMenu;
 
     ControlP5 rightMenu;
     ControlP5 slideMenu;
@@ -56,6 +61,10 @@ public class MainClass extends PApplet {
 
     private boolean menuTest=false;
     private boolean isPaused=true;
+
+    private boolean isColorMenu=false;
+    private boolean isPresetsMenu=false;
+
 
     private static boolean isPlaying = true;
 
@@ -137,6 +146,16 @@ public class MainClass extends PApplet {
         startMenu=new StartMenu(this,HEIGHT,WIDTH);
         startMenu.menu.setAutoDraw(false);
         startMenu.menu.setVisible(true);
+
+
+        colorMenu=new ColorMenu(this,HEIGHT,WIDTH);
+        colorMenu.menu.setAutoDraw(false);
+        colorMenu.menu.setVisible(false);
+
+        presetsMenu=new PresetsMenu(this,HEIGHT,WIDTH);
+        presetsMenu.menu.setAutoDraw(false);
+        presetsMenu.menu.setVisible(false);
+
 
         //new Main Menu;
        // menu2 = new LeftMenu(this,HEIGHT,WIDTH);
@@ -275,6 +294,8 @@ public class MainClass extends PApplet {
 
         slideMenu.draw();
         startMenu.menu.draw();
+        colorMenu.menu.draw();
+        presetsMenu.menu.draw();
        // rightMenu.draw();
 
         if(kinect.numDevices()>0) {
@@ -376,8 +397,9 @@ public class MainClass extends PApplet {
         if(slideMenu.isVisible())
             menu.update();
 //        rightMenu.update();
-
-
+        startMenu.update();
+        colorMenu.update();
+        presetsMenu.update();
 
 
 
@@ -434,12 +456,38 @@ public class MainClass extends PApplet {
 //
        // }
         if(key=='d'){
-            menu.right(0.03f);
+            if(isPaused) {
+                if(isColorMenu){
+                    colorMenu.right(0.03f);
+                    return;
+                }
+                if(isPresetsMenu){
+                    presetsMenu.right(0.03f);
+                    return;
+                }
+                startMenu.right(0.03f);
+            }else{
+                menu.right(0.03f);
+            }
 
         }
         if(key=='a'){
-            menu.left(0.03f);
+            if(isPaused) {
+                if(isColorMenu){
+                    colorMenu.left(0.03f);
+                    return;
+                }
+                if(isPresetsMenu){
+                    presetsMenu.left(0.03f);
+                    return;
+                }
+                startMenu.left(0.03f);
+                System.out.println("start menu left");
+            }else {
+                menu.left(0.03f);
+                System.out.println("game menu left");
 
+            }
         }
         if(key=='g'){
             jingle.skip(10000);
@@ -448,10 +496,67 @@ public class MainClass extends PApplet {
         if(key=='k'){
             kinect.stopDepth();
         }
+        if(key=='w'&&isPaused){
+            if(isColorMenu){
+                colorMenu.press();
+                return;
+            }
+            if(isPresetsMenu){
+                presetsMenu.press();
+                return;
+            }
+            startMenu.press();
+            System.out.println("pressed start menu");
+        }
+        if(key=='p'){
+            writeToCSV();
+        }
+        if(key=='o'){
+            readCSV();
+        }
 
 
     }
 
+
+    public void startColorMenu(){
+        isColorMenu=true;
+        colorMenu.isMovingIn=true;
+        colorMenu.moveIn();
+        colorMenu.menu.setVisible(true);
+        startMenu.menu.setVisible(false);
+    }
+
+    public void endColorMenu(int i){
+        isColorMenu=false;
+        colorMenu.menu.setVisible(false);
+        startMenu.isMovingIn=true;
+        startMenu.moveIn();
+        startMenu.menu.setVisible(true);
+    }
+
+    public void startPresetsMenu(){
+        isPresetsMenu=true;
+        presetsMenu.isMovingIn=true;
+        presetsMenu.moveIn();
+        presetsMenu.menu.setVisible(true);
+        startMenu.menu.setVisible(false);
+    }
+    public void endPresetsMenu(int i){
+        isPresetsMenu=false;
+        presetsMenu.menu.setVisible(false);
+        startMenu.isMovingIn=true;
+        startMenu.moveIn();
+        startMenu.menu.setVisible(true);
+    }
+
+
+    public void endColorMenu1(int i){
+        endColorMenu(i);
+    }
+    public void endColorMenu2(int i){
+        endColorMenu(i);
+    }
 
     public int getHEIGHT() {
         return HEIGHT;
@@ -478,6 +583,7 @@ public class MainClass extends PApplet {
         slideMenu.setVisible(true);
         startMenu.menu.setVisible(false);
         jingle.loop();
+        isPaused=false;
     }
 
     int i=0;
@@ -506,6 +612,66 @@ public class MainClass extends PApplet {
 //
 //
    // }
+
+
+    public void writeToCSV(){
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new File("MyNewData.csv"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+
+// No need give the headers Like: id, Name on builder.append
+
+        for(int i=0;i<3180;i++){
+            builder.append(lookupTable.value1[i]);
+            builder.append(',');
+            builder.append(lookupTable.value2[i]);
+            builder.append(',');
+            builder.append(lookupTable.value3[i]);
+            builder.append(',');
+            builder.append(lookupTable.value4[i]);
+            builder.append(',');
+            builder.append(lookupTable.value5[i]);
+            builder.append(',');
+            builder.append(lookupTable.value6[i]);
+            builder.append(',');
+
+
+        }
+
+        pw.write(builder.toString());
+        pw.close();
+        System.out.println("done!");
+    }
+
+    public void readCSV(){
+        Scanner scanner=null;
+        try {
+             scanner = new Scanner(new File("MyNewData.csv"));
+        }catch (java.io.FileNotFoundException e){
+            System.out.println("fileNotFound");
+        }
+        scanner.useDelimiter(",");
+        int counter=0;
+        int counter2=0;
+        while(scanner.hasNext()){
+
+
+                lookupTable.table.get(counter)[counter2] = Float.parseFloat(scanner.next());
+                counter++;
+                if (counter >= 6) {
+                    counter = 0;
+                    counter2++;
+                    System.out.println("c2:  " + counter2);
+                }
+
+        }
+        scanner.close();
+        System.out.println("done Reading");
+    }
 
 
 }
