@@ -3,6 +3,8 @@ package src;
 /**
  * Created by js148 on 18.07.2018.
  */
+
+// Ich zeige Benni Git in IDEA
 public class RenderPoint {
     private float x;
     private float y;
